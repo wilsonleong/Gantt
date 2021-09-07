@@ -7,7 +7,8 @@
         "ColName_ShortDescription": "Short Description",
         "ColName_Category1": "Category",
         "ColName_Category2": "Type",
-		"ColName_Completion": "PctCompleted"
+		"ColName_Completion": "PctCompleted",
+		"ColName_Comment": "Comment"
     },
     "Chart": {
         "ChartStartDate": "2021-04-01",
