@@ -12,7 +12,6 @@ Source: https://medium.com/geekculture/create-an-advanced-gantt-chart-in-python-
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
-#from matplotlib import dates as mdates
 import datetime
 import json
 import os
@@ -95,7 +94,7 @@ for i in range(len(categories)):
 # sort by Category
 df=df.sort_values(by='category1', ascending=False).reset_index(drop=True)
 
-# #Only HR Tasks
+# Filter the list by...
 # df=df[df.Department=='HR'].reset_index()
 # #Only Incomplete tasks
 #df=df[df.Completion<100].reset_index()
@@ -136,11 +135,8 @@ for handle, label in zip(handles, labels):
 plt.legend(handle_list, label_list, fontsize='medium', 
            title=chart_legend_title, title_fontsize='large')
 
-#fig.autofmt_xdate() #does not do anything!
-#ax.xaxis.set_major_formatter(mdates.DateFormatter('%m-%Y'))
-
+# rotate date
 plt.xticks(rotation=90, ha='right')
-#plt.update_xaxes(dtick='M1', tickformet='%b-%Y')
 
 fig.savefig('output.png', dpi=150, bbox_inches='tight')
 plt.show()
