@@ -10,8 +10,8 @@
 This script generates a Gantt chart based on the list of issues
 
 ## Links
-Example output: https://github.com/wilsonleong/Gantt/wiki/Gantt-Chart
-Project kanban board: https://github.com/wilsonleong/Gantt/projects/1
+* Example output: https://github.com/wilsonleong/Gantt/wiki/Gantt-Chart
+* Project kanban board: https://github.com/wilsonleong/Gantt/projects/1
 
 ## Libraries used (Python 3.8 - 64 bits)
 * datetime
