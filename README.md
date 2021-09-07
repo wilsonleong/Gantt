@@ -4,7 +4,7 @@
 #Python #pandas #matplotlib
 
 ## Problem Statement
-1. There is no free tool to plot project status by issues
+Being a Product Owner, I need to produce slightly different versions of roadmap to my stakeholders. There is no free tool to plot a chart to visualise my roadmap / backlog.
 
 ## Solution
 This script generates a Gantt chart based on the list of issues
