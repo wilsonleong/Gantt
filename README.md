@@ -9,3 +9,5 @@
 ## Solution
 This script generates a Gantt chart based on the list of issues
 
+## Example Output
+URL: https://github.com/wilsonleong/Gantt/wiki/Gantt-Chart
