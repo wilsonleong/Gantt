@@ -1,0 +1,19 @@
+{
+    "InputFile": {
+        "FilePath": "DMS items.xlsx",
+        "NoOfRowsToSkip": 6,
+        "ColName_Start": "Date Opened",
+        "ColName_End": "ETA",
+        "ColName_ShortDescription": "Short Description",
+        "ColName_Category1": "Category",
+        "ColName_Category2": "Type",
+		"ColName_Completion": "PctCompleted"
+    },
+    "Chart": {
+        "ChartStartDate": "2021-04-01",
+        "ChartTitle": "DMS Issues",
+        "ChartGroupBy": "category1",
+        "LegendTitle": "Fix Component",
+        "XAxisMajor_NoOfDays": 28
+    }
+}
