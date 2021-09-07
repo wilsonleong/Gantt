@@ -9,5 +9,13 @@
 ## Solution
 This script generates a Gantt chart based on the list of issues
 
-## Example Output
-URL: https://github.com/wilsonleong/Gantt/wiki/Gantt-Chart
+## Links
+Example output: https://github.com/wilsonleong/Gantt/wiki/Gantt-Chart
+Project kanban board: https://github.com/wilsonleong/Gantt/projects/1
+
+## Libraries used (Python 3.8 - 64 bits)
+* datetime
+* json
+* matplotlib
+* os
+* pandas
