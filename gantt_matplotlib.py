@@ -21,7 +21,7 @@ cfg = json.loads(f)
 
 # import data from CFG file
 chart_start_date = datetime.datetime.strptime(cfg['Chart']['ChartStartDate'],'%Y-%m-%d')
-chart_title = cfg['Chart']['ChartTitle']
+chart_title = cfg['Chart']['ChartTitle'] + str(" - %s" % datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S'))
 chart_legend_title = cfg['Chart']['LegendTitle']
 chart_groupby = cfg['Chart']['ChartGroupBy']
 xticks_size = cfg['Chart']['XAxisMajor_NoOfDays']
@@ -35,6 +35,7 @@ col_cat1 = cfg['InputFile']['ColName_Category1']
 col_cat2 = cfg['InputFile']['ColName_Category2']
 col_des = cfg['InputFile']['ColName_ShortDescription']
 col_pct_completed = cfg['InputFile']['ColName_Completion']
+col_comment = cfg['InputFile']['ColName_Comment']
 if input_file_ext=='xlsx' or input_file_ext=='xls':
     df = pd.read_excel(input_file, skiprows=input_file_skiprows)
 elif input_file_ext=='csv':
@@ -49,13 +50,16 @@ df.rename(columns={col_start: 'start',
                    col_des: 'task',
                    col_cat1: 'category1',
                    col_cat2: 'category2',
-                   col_pct_completed: 'completion'}, inplace=True)
-df = df[['task','start','end','category1','category2','completion']]
+                   col_pct_completed: 'completion',
+                   col_comment: 'comment'
+                   }, inplace=True)
+df = df[['task','start','end','category1','category2','completion','comment']]
 # pre-processing: trim description
 df.task = df.task.str[:50]
 # pre-processing: if no end date, fill values with start date
 df.loc[df.end.isna(), 'end'] = df[df.end.isna()]['start']
-
+# fill na comments
+df.comment.fillna('', inplace=True)
 
 # zoom into chart start date
 for i in range(len(df)):
@@ -112,9 +116,13 @@ for i in range(df.shape[0]):
     plt.barh(y=yticks[i], left=df.rel_start[i], 
              width=df.w_comp[i], alpha=1, color=color,
             label=df[chart_groupby][i])
+    if df.comment[i]=='':
+        comment_str = f'{df.completion[i]}%'
+    else:
+        comment_str = f'{df.completion[i]}%' + ' - %s' % df.comment[i]
     plt.text(x=df.rel_start[i]+df.w_comp[i],
              y=yticks[i],
-             s=f'{df.completion[i]}%')
+             s= comment_str)
 
 plt.gca().invert_yaxis()
 plt.xticks(ticks=x_ticks[::xticks_size], labels=x_labels[::xticks_size])
