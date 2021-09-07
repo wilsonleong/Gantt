@@ -7,7 +7,10 @@
 As a Product Owner, I constantly need to produce slightly different versions of roadmap / project status update to my stakeholders. There is no free tool on the market that helps me plot a Gantt chart to visualise the backlog.
 
 ## Solution
-This script generates a Gantt chart based on the list of issues
+* This script generates a Gantt chart for timelines and roadmapping based on the list of issues (e.g. export from JIRA)
+* Visualise my management data
+* Automate my project scheduling
+* Craft neat high-level agile roadmaps
 
 ## Links
 * Example output: https://github.com/wilsonleong/Gantt/wiki/Gantt-Chart
