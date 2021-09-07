@@ -4,7 +4,7 @@
 #Python #pandas #matplotlib
 
 ## Problem Statement
-Being a Product Owner, I need to produce slightly different versions of roadmap to my stakeholders. There is no free tool to plot a chart to visualise my roadmap / backlog.
+As a Product Owner, I need to produce slightly different versions of roadmap to my stakeholders. There is no free tool to plot a chart to visualise my roadmap / backlog.
 
 ## Solution
 This script generates a Gantt chart based on the list of issues
