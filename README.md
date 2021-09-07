@@ -1,6 +1,6 @@
 # Gantt Chart
 
-#Gantt #ProjectManagement #Roadmap
+#Gantt #ProjectManagement #Roadmap #Timeline
 #Python #pandas #matplotlib
 
 ## Problem Statement
