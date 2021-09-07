@@ -15,13 +15,15 @@ import matplotlib.colors as mcolors
 import datetime
 import json
 import os
+import pytz
 
 f = open(r'D:\Users\wleong\Documents\_personal\gantt\config.json').read()
 cfg = json.loads(f)
 
+time_now = datetime.datetime.now()
 # import data from CFG file
 chart_start_date = datetime.datetime.strptime(cfg['Chart']['ChartStartDate'],'%Y-%m-%d')
-chart_title = cfg['Chart']['ChartTitle'] + str(" - %s" % datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S'))
+chart_title = cfg['Chart']['ChartTitle'] + str(" - %s" % datetime.datetime.strftime(time_now, '%Y-%m-%d %H:%M:%S'))
 chart_legend_title = cfg['Chart']['LegendTitle']
 chart_groupby = cfg['Chart']['ChartGroupBy']
 xticks_size = cfg['Chart']['XAxisMajor_NoOfDays']
