@@ -195,7 +195,8 @@ def generate_gantt(cfg, df):
 # main process
 def main():
     # get the config from json file
-    cfg = get_cfg(r'D:\Users\wleong\Documents\_personal\gantt\config.json')
+    #cfg = get_cfg(r'D:\Users\wleong\Documents\_personal\gantt\config_DMS.json')
+    cfg = get_cfg(r'D:\Users\wleong\Documents\_personal\gantt\config_sample.json')
     
     # load issues data & pre-process
     df = get_data(cfg)
@@ -203,6 +204,7 @@ def main():
     
     # filter, aggregate data
     df2 = filter_agg_data(cfg, df)
+    df2.to_excel('agg_output.xlsx', index=False)
     
     # plot gantt chart & save as PNG
     generate_gantt(cfg, df2)

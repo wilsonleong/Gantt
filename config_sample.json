@@ -1,0 +1,29 @@
+{
+    "InputFile": {
+        "FilePath": "sample issues.xlsx",
+        "NoOfRowsToSkip": 0,
+        "ColName_Start": "Date Opened",
+        "ColName_End": "ETA",
+        "ColName_ShortDescription": "Task",
+        "ColName_Category1": "App",
+        "ColName_Category2": "Issue Category",
+		"ColName_Completion": "PctCompleted",
+		"ColName_Comment": "Comment"
+    },
+	
+		"DataSelection": {
+			"Cat1ToInclude": [],
+			"Cat2ToInclude": [],
+			"AggregateBy": [],
+			"_AggregateByComment": "AggregateBy has to be nothing or category1, if category1, chart groupby also has to be the same"
+		}
+	,
+    "Chart": {
+        "ChartStartDate": "2021-01-01",
+        "ChartTitle": "Backlog & Timeline",
+        "ChartGroupBy": "category1",
+		"_ChartGroupByComment": "AggregateBy has to be nothing or category1, if category1, chart groupby also has to be the same",
+        "LegendTitle": "App",
+        "XAxisMajor_NoOfDays": 28
+    }
+}
