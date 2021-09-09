@@ -20,7 +20,6 @@ import pytz
 
 # get configurations from json file
 def get_cfg(cfg_file_path):
-    #f = open(r'D:\Users\wleong\Documents\_personal\gantt\config.json').read()
     f = open(cfg_file_path).read()
     cfg = json.loads(f)
     return cfg
@@ -45,7 +44,6 @@ def get_data(cfg):
         #Convert dates to datetime format (TO BE FIXED)
         #df.start=pd.to_datetime(df.start, format='%d/%m/%Y')
         #df.end=pd.to_datetime(df.end, format='%d/%m/%Y')
-        
     # columns renaming
     df.rename(columns={col_start: 'start',
                        col_end: 'end',
@@ -56,14 +54,17 @@ def get_data(cfg):
                        col_comment: 'comment'
                        }, inplace=True)
     df = df[['task','start','end','category1','category2','completion','comment']]
-    
+    return df
+
+
+# prepare issues data for chart
+def preprocess_data(cfg, df):
     # pre-processing: trim description
     df.task = df.task.str[:50]
     # pre-processing: if no end date, fill values with start date
     df.loc[df.end.isna(), 'end'] = df[df.end.isna()]['start']
     # fill na comments
     df.comment.fillna('', inplace=True)
-    
     # zoom into chart start date
     chart_start_date = datetime.datetime.strptime(cfg['Chart']['ChartStartDate'],'%Y-%m-%d')
     for i in range(len(df)):
@@ -71,23 +72,51 @@ def get_data(cfg):
             df.loc[i,'start'] = chart_start_date
     # if both start & completion date are earlier than user filter, then remove row
     df = df[~(df.end < chart_start_date)]
-    
     #Add Duration
     df['duration']=df.end-df.start
     df.duration=df.duration.apply(lambda x: x.days+1)
-    #sort in ascending order of start date
-    df=df.sort_values(by=['category1','start'], ascending=True)
-    
     #Add relative date
-    df['rel_start']=df.start.apply(lambda x: (x - p_start).days)
-
+    df['rel_start']=df.start.apply(lambda x: (x - df.start.min()).days)
     # calculate width of completed portion of the task
     df['w_comp']=round(df.completion*df.duration/100,2)
-
     # sort by Category
-    df=df.sort_values(by='category1', ascending=False).reset_index(drop=True)
-
+    df=df.sort_values(by=['category1','start'], ascending=[False,True]).reset_index(drop=True)
     return df
+
+
+# filter, aggregate data based on config
+def filter_agg_data(cfg, df):
+    filter_cat1 = cfg['DataSelection']['Cat1ToInclude']
+    filter_cat2 = cfg['DataSelection']['Cat2ToInclude']
+    aggby = cfg['DataSelection']['AggregateBy']
+    
+    # if there is a requirement to aggregate, then proceed
+    if len(aggby) > 0:
+        # make a copy of the data
+        df2 = df.copy()
+        # filter by cat1
+        if len(filter_cat1) > 0:
+            df2 = df[df.category1.isin(filter_cat1)]
+        # filter by cat2
+        if len(filter_cat2) > 0:
+            df2 = df[df.category2.isin(filter_cat2)]
+        # aggregate
+        df3 = df2.groupby(aggby).agg({'start':min,'end':max,'duration':sum,'w_comp':sum})
+        df3['completion'] = round(df3.w_comp / df3.duration * 100, 2)
+        df3.drop(columns=['w_comp','duration'], inplace=True)
+        # add back other data fields
+        df3.reset_index(inplace=True)
+        df3['task'] = df3[aggby]
+        df3['comment'] = None
+        if 'category1' not in df3.columns:
+            df3['category1'] = aggby[0]
+        if 'category2' not in df3.columns:
+            df3['category2'] = None
+        # preprocess again
+        df4 = preprocess_data(cfg, df3)
+        return df4
+    else:
+        return df
 
 
 # plot gantt chart and save as PNG
@@ -115,15 +144,9 @@ def generate_gantt(cfg, df):
     c_dict = {}
     for i in range(len(categories)):
         c_dict[categories[i]] = colours[i]
-
-    # Filter the list by...
-    # df=df[df.Department=='HR'].reset_index()
-    # #Only Incomplete tasks
-    #df=df[df.Completion<100].reset_index()
     
     yticks=[i for i in range(len(df.task))]
     
-    #fig = plt.figure(figsize=(12,7))
     fig, ax = plt.subplots(1,1, figsize=(12,10))
     plt.title(chart_title, size=14)
     for i in range(df.shape[0]):
@@ -174,9 +197,15 @@ def main():
     # get the config from json file
     cfg = get_cfg(r'D:\Users\wleong\Documents\_personal\gantt\config.json')
     
-    # load issues data
+    # load issues data & pre-process
     df = get_data(cfg)
+    df = preprocess_data(cfg, df)
+    
+    # filter, aggregate data
+    df2 = filter_agg_data(cfg, df)
     
     # plot gantt chart & save as PNG
-    generate_gantt(cfg, df)
+    generate_gantt(cfg, df2)
 
+
+main()

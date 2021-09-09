@@ -10,9 +10,16 @@
 		"ColName_Completion": "PctCompleted",
 		"ColName_Comment": "Comment"
     },
+	
+		"DataSelection": {
+			"Cat1ToInclude": ["DMS","ICE","LGH"],
+			"Cat2ToInclude": [],
+			"AggregateBy": []
+		}
+	,
     "Chart": {
-        "ChartStartDate": "2021-04-01",
-        "ChartTitle": "DMS Issues",
+        "ChartStartDate": "2021-01-01",
+        "ChartTitle": "DMS Issues & Fix Timeline",
         "ChartGroupBy": "category1",
         "LegendTitle": "Fix Component",
         "XAxisMajor_NoOfDays": 28
