@@ -83,6 +83,8 @@ def preprocess_data(cfg, df):
     else:
         df['w_comp'] = 0
     # sort by Category
+    if len(cfg['DataSelection']['AggregateBy']) > 0:
+        chart_legend_by = cfg['DataSelection']['AggregateBy'][0]
     df=df.sort_values(by=[chart_legend_by,'start'], ascending=[False,True]).reset_index(drop=True)
     return df
 
@@ -156,9 +158,16 @@ def generate_gantt(cfg, df2):
     # import data from CFG file
     chart_start_date = datetime.datetime.strptime(cfg['Chart']['ChartStartDate'],'%Y-%m-%d')
     chart_title = cfg['Chart']['ChartTitle'] + str(" - %s" % datetime.datetime.strftime(time_now, '%Y-%m-%d %H:%M:%S'))
-    chart_legend_title = cfg['Chart']['LegendTitle']
-    chart_legend_by = cfg['Chart']['ChartLegendBy']
     xticks_size = cfg['Chart']['XAxisMajor_NoOfDays']
+    
+    # if data was aggregated, legend will need to be forced
+    if len(cfg['DataSelection']['AggregateBy']) > 0:
+        aggby = cfg['DataSelection']['AggregateBy'][0]
+        chart_legend_title = aggby
+        chart_legend_by = aggby
+    else:
+        chart_legend_title = cfg['Chart']['LegendTitle']
+        chart_legend_by = cfg['Chart']['ChartLegendBy']
 
     #project level variables
     p_start = df2.start.min()

@@ -10,7 +10,7 @@
     },
 	
 	"DataSelection": {
-		"Filter1_ColName": "Status",
+		"Filter1_ColName": null,
 		"Filter1_Type": "Exclude",
 		"Filter1_Values": ["Completed"],
 		
@@ -22,14 +22,17 @@
 		"Filter3_Type": "Include",
 		"Filter3_Values": [],
 		
-		"AggregateBy": ["App"]
+		"AggregateBy": []
 	},
 	
     "Chart": {
         "ChartStartDate": "2021-01-01",
         "ChartTitle": "Backlog & Timeline",
+		
+		"_ChartLegend_Comment": "This section will be forced to the first item in AggregateBy if it isn't empty",
         "ChartLegendBy": "App",
-        "LegendTitle": "By App",		
+        "LegendTitle": "App",
+		
         "XAxisMajor_NoOfDays": 28
     }
 }
