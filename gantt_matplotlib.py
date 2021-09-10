@@ -32,11 +32,10 @@ def get_data(cfg):
     input_file_skiprows = cfg['InputFile']['NoOfRowsToSkip']
     col_start = cfg['InputFile']['ColName_Start']
     col_end = cfg['InputFile']['ColName_End']
-    col_cat1 = cfg['InputFile']['ColName_Category1']
-    col_cat2 = cfg['InputFile']['ColName_Category2']
     col_des = cfg['InputFile']['ColName_ShortDescription']
-    col_pct_completed = cfg['InputFile']['ColName_Completion']
     col_comment = cfg['InputFile']['ColName_Comment']
+    # optional data field: check if it's null
+    # check if input file is Excel spreadsheet or CSV file
     if input_file_ext=='xlsx' or input_file_ext=='xls':
         df = pd.read_excel(input_file, skiprows=input_file_skiprows)
     elif input_file_ext=='csv':
@@ -48,17 +47,17 @@ def get_data(cfg):
     df.rename(columns={col_start: 'start',
                        col_end: 'end',
                        col_des: 'task',
-                       col_cat1: 'category1',
-                       col_cat2: 'category2',
-                       col_pct_completed: 'completion',
                        col_comment: 'comment'
                        }, inplace=True)
-    df = df[['task','start','end','category1','category2','completion','comment']]
+    if cfg['InputFile']['ColName_Completion'] is not None:
+        col_pct_completed = cfg['InputFile']['ColName_Completion']
+        df.rename(columns={col_pct_completed: 'completion'}, inplace=True)
     return df
 
 
 # prepare issues data for chart
 def preprocess_data(cfg, df):
+    chart_legend_by = cfg['Chart']['ChartLegendBy']
     # pre-processing: trim description
     df.task = df.task.str[:50]
     # pre-processing: if no end date, fill values with start date
@@ -77,61 +76,93 @@ def preprocess_data(cfg, df):
     df.duration=df.duration.apply(lambda x: x.days+1)
     #Add relative date
     df['rel_start']=df.start.apply(lambda x: (x - df.start.min()).days)
-    # calculate width of completed portion of the task
-    df['w_comp']=round(df.completion*df.duration/100,2)
+    # if completion % is available
+    if cfg['InputFile']['ColName_Completion'] is not None:
+        # calculate width of completed portion of the task
+        df['w_comp']=round(df.completion*df.duration/100,2)
+    else:
+        df['w_comp'] = 0
     # sort by Category
-    df=df.sort_values(by=['category1','start'], ascending=[False,True]).reset_index(drop=True)
+    df=df.sort_values(by=[chart_legend_by,'start'], ascending=[False,True]).reset_index(drop=True)
     return df
 
 
 # filter, aggregate data based on config
 def filter_agg_data(cfg, df):
-    filter_cat1 = cfg['DataSelection']['Cat1ToInclude']
-    filter_cat2 = cfg['DataSelection']['Cat2ToInclude']
+    filter1_colname = cfg['DataSelection']['Filter1_ColName']
+    filter1_type = cfg['DataSelection']['Filter1_Type']
+    filter1_values = cfg['DataSelection']['Filter1_Values']
+    filter2_colname = cfg['DataSelection']['Filter2_ColName']
+    filter2_type = cfg['DataSelection']['Filter2_Type']
+    filter2_values = cfg['DataSelection']['Filter2_Values']
+    filter3_colname = cfg['DataSelection']['Filter3_ColName']
+    filter3_type = cfg['DataSelection']['Filter3_Type']
+    filter3_values = cfg['DataSelection']['Filter3_Values']
     aggby = cfg['DataSelection']['AggregateBy']
+    
+    # apply filters
+    df_filtered = df.copy()
+    # apply filter 1
+    if filter1_colname is not None:
+        if filter1_type.lower() in ['include','inc']:
+            df_filtered = df[df[filter1_colname].isin(filter1_values)]
+        elif filter1_type.lower() in ['exclude','exc']:
+            df_filtered = df[~df[filter1_colname].isin(filter1_values)]
+        else:
+            print ('ERROR: Unknown filter1 type. Please enter "include" or "exclude".')
+    # apply filter 2
+    if filter2_colname is not None:
+        if filter2_type.lower() in ['include','inc']:
+            df_filtered = df_filtered[df_filtered[filter2_colname].isin(filter2_values)]
+        elif filter2_type.lower() in ['exclude','exc']:
+            df_filtered = df_filtered[~df_filtered[filter2_colname].isin(filter2_values)]
+        else:
+            print ('ERROR: Unknown filter2 type. Please enter "include" or "exclude".')
+    # apply filter 3
+    if filter3_colname is not None:
+        if filter3_type.lower() in ['include','inc']:
+            df_filtered = df_filtered[df_filtered[filter3_colname].isin(filter3_values)]
+        elif filter3_type.lower() in ['exclude','exc']:
+            df_filtered = df_filtered[~df_filtered[filter3_colname].isin(filter3_values)]
+        else:
+            print ('ERROR: Unknown filter3 type. Please enter "include" or "exclude".')
+    df_filtered.reset_index(drop=True, inplace=True)
     
     # if there is a requirement to aggregate, then proceed
     if len(aggby) > 0:
         # make a copy of the data
-        df2 = df.copy()
-        # filter by cat1
-        if len(filter_cat1) > 0:
-            df2 = df[df.category1.isin(filter_cat1)]
-        # filter by cat2
-        if len(filter_cat2) > 0:
-            df2 = df[df.category2.isin(filter_cat2)]
         # aggregate
-        df3 = df2.groupby(aggby).agg({'start':min,'end':max,'duration':sum,'w_comp':sum})
+        df3 = df_filtered.groupby(aggby).agg({'start':min,'end':max,'duration':sum,'w_comp':sum})
         df3['completion'] = round(df3.w_comp / df3.duration * 100, 2)
         df3.drop(columns=['w_comp','duration'], inplace=True)
         # add back other data fields
         df3.reset_index(inplace=True)
-        df3['task'] = df3[aggby]
+        df3['task'] = df3[aggby[0]]
         df3['comment'] = None
-        if 'category1' not in df3.columns:
-            df3['category1'] = aggby[0]
-        if 'category2' not in df3.columns:
-            df3['category2'] = None
+        # if 'category1' not in df3.columns:
+        #     df3['category1'] = aggby[0]
+        # if 'category2' not in df3.columns:
+        #     df3['category2'] = None
         # preprocess again
-        df4 = preprocess_data(cfg, df3)
-        return df4
+        df_aggd = preprocess_data(cfg, df3)
+        return df_aggd
     else:
-        return df
+        return df_filtered
 
 
 # plot gantt chart and save as PNG
-def generate_gantt(cfg, df):
+def generate_gantt(cfg, df2):
     time_now = datetime.datetime.now()
     # import data from CFG file
     chart_start_date = datetime.datetime.strptime(cfg['Chart']['ChartStartDate'],'%Y-%m-%d')
     chart_title = cfg['Chart']['ChartTitle'] + str(" - %s" % datetime.datetime.strftime(time_now, '%Y-%m-%d %H:%M:%S'))
     chart_legend_title = cfg['Chart']['LegendTitle']
-    chart_groupby = cfg['Chart']['ChartGroupBy']
+    chart_legend_by = cfg['Chart']['ChartLegendBy']
     xticks_size = cfg['Chart']['XAxisMajor_NoOfDays']
 
     #project level variables
-    p_start = df.start.min()
-    p_end = df.end.max()
+    p_start = df2.start.min()
+    p_end = df2.end.max()
     p_duration = (p_end-p_start).days+1
     
     #Create custom x-ticks and x-tick labels
@@ -139,35 +170,49 @@ def generate_gantt(cfg, df):
     x_labels=[(p_start+datetime.timedelta(days=i)).strftime('%d-%b-%y') for i in x_ticks]
     
     # assign colours
-    colours = list(mcolors.TABLEAU_COLORS.keys())
-    categories = list(df.category1.unique())
+    categories = list(df2[chart_legend_by].unique())
+    if len(categories)>len(mcolors.TABLEAU_COLORS):
+        colours = list(mcolors.CSS4_COLORS.keys())
+    else:
+        colours = list(mcolors.TABLEAU_COLORS.keys())
     c_dict = {}
     for i in range(len(categories)):
         c_dict[categories[i]] = colours[i]
     
-    yticks=[i for i in range(len(df.task))]
-    
+    yticks=[i for i in range(len(df2.task))]
+
     fig, ax = plt.subplots(1,1, figsize=(12,10))
     plt.title(chart_title, size=14)
-    for i in range(df.shape[0]):
-        color=c_dict[df[chart_groupby][i]]
-        plt.barh(y=yticks[i], left=df.rel_start[i], 
-                 width=df.duration[i], alpha=0.4, 
-                 color=color)
-        plt.barh(y=yticks[i], left=df.rel_start[i], 
-                 width=df.w_comp[i], alpha=1, color=color,
-                label=df[chart_groupby][i])
-        if df.comment[i]=='':
-            comment_str = f'{df.completion[i]}%'
+    
+    # plot each issue row by row
+    for i in range(len(df2)):
+        color = c_dict[df2[chart_legend_by][i]]
+
+        # if completion % is available, add value label
+        if cfg['InputFile']['ColName_Completion'] is not None:
+            alpha_completed = 0.4
+            if df2.comment[i]=='':
+                comment_str = f'{df2.completion[i]}%'
+            else:
+                comment_str = f'{df2.completion[i]}%' + ' - %s' % df2.comment[i]
+            plt.text(x=df2.rel_start[i]+df2.w_comp[i],
+                     y=yticks[i],
+                     s= comment_str)
         else:
-            comment_str = f'{df.completion[i]}%' + ' - %s' % df.comment[i]
-        plt.text(x=df.rel_start[i]+df.w_comp[i],
-                 y=yticks[i],
-                 s= comment_str)
+            alpha_completed = 1
+
+        # plot completed bar
+        plt.barh(y=yticks[i], left=df2.rel_start[i], 
+                 width=df2.duration[i], alpha=alpha_completed, 
+                 color=color)
+        # plot entire timeline bar
+        plt.barh(y=yticks[i], left=df2.rel_start[i], 
+                 width=df2.w_comp[i], alpha=1, color=color,
+                label=df2[chart_legend_by][i])
     
     plt.gca().invert_yaxis()
     plt.xticks(ticks=x_ticks[::xticks_size], labels=x_labels[::xticks_size])
-    plt.yticks(ticks=yticks, labels=df.task)
+    plt.yticks(ticks=yticks, labels=df2.task)
     plt.grid(axis='x', alpha=0.1)
     
     # add reference line for today

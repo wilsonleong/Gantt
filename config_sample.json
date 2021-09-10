@@ -5,25 +5,31 @@
         "ColName_Start": "Date Opened",
         "ColName_End": "ETA",
         "ColName_ShortDescription": "Task",
-        "ColName_Category1": "App",
-        "ColName_Category2": "Issue Category",
 		"ColName_Completion": "PctCompleted",
 		"ColName_Comment": "Comment"
     },
 	
-		"DataSelection": {
-			"Cat1ToInclude": [],
-			"Cat2ToInclude": [],
-			"AggregateBy": [],
-			"_AggregateByComment": "AggregateBy has to be nothing or category1, if category1, chart groupby also has to be the same"
-		}
-	,
+	"DataSelection": {
+		"Filter1_ColName": "Status",
+		"Filter1_Type": "Exclude",
+		"Filter1_Values": ["Completed"],
+		
+		"Filter2_ColName": null,
+		"Filter2_Type": "Include",
+		"Filter2_Values": [],
+		
+		"Filter3_ColName": null,
+		"Filter3_Type": "Include",
+		"Filter3_Values": [],
+		
+		"AggregateBy": ["App"]
+	},
+	
     "Chart": {
         "ChartStartDate": "2021-01-01",
         "ChartTitle": "Backlog & Timeline",
-        "ChartGroupBy": "category1",
-		"_ChartGroupByComment": "AggregateBy has to be nothing or category1, if category1, chart groupby also has to be the same",
-        "LegendTitle": "App",
+        "ChartLegendBy": "App",
+        "LegendTitle": "By App",		
         "XAxisMajor_NoOfDays": 28
     }
 }
