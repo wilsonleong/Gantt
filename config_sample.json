@@ -6,7 +6,9 @@
         "ColName_End": "ETA",
         "ColName_ShortDescription": "Task",
 		"ColName_Completion": "PctCompleted",
-		"ColName_Comment": "Comment"
+		"ColName_Comment": "Comment",
+		
+		"ColName_RefDate": "Reference Date"
     },
 	
 	"DataSelection": {
