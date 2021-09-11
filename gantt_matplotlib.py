@@ -76,6 +76,10 @@ def preprocess_data(cfg, df):
     df.duration=df.duration.apply(lambda x: x.days+1)
     #Add relative date
     df['rel_start']=df.start.apply(lambda x: (x - df.start.min()).days)
+    # add relative ref date (optional)
+    ref_date = cfg['InputFile']['ColName_RefDate']
+    if ref_date is not None:
+        df['rel_ref_date'] = df[ref_date].apply(lambda x: (x - df.start.min()).days)
     # if completion % is available
     if cfg['InputFile']['ColName_Completion'] is not None:
         # calculate width of completed portion of the task
@@ -181,9 +185,9 @@ def generate_gantt(cfg, df2):
     # assign colours
     categories = list(df2[chart_legend_by].unique())
     if len(categories)>len(mcolors.TABLEAU_COLORS):
-        colours = list(mcolors.CSS4_COLORS.keys())
+        colours = list(mcolors.CSS4_COLORS.keys())      # 1xx different colours
     else:
-        colours = list(mcolors.TABLEAU_COLORS.keys())
+        colours = list(mcolors.TABLEAU_COLORS.keys())   # 10 different colours
     c_dict = {}
     for i in range(len(categories)):
         c_dict[categories[i]] = colours[i]
@@ -218,6 +222,19 @@ def generate_gantt(cfg, df2):
         plt.barh(y=yticks[i], left=df2.rel_start[i], 
                  width=df2.w_comp[i], alpha=1, color=color,
                 label=df2[chart_legend_by][i])
+
+
+        # plot reference date (optional data field)
+        ref_date = cfg['InputFile']['ColName_RefDate']
+        if ref_date is not None:
+            if not pd.isnull(df2[ref_date][i]):
+                ax.plot(df2.rel_ref_date[i],                 # this x-axis needs to be relative to the chart start date
+                        yticks[i],
+                        color='gray',
+                        marker='|',         # https://matplotlib.org/stable/api/markers_api.html
+                        markeredgewidth=1,
+                        markersize=20,
+                        lw=0)
     
     plt.gca().invert_yaxis()
     plt.xticks(ticks=x_ticks[::xticks_size], labels=x_labels[::xticks_size])
@@ -250,7 +267,8 @@ def generate_gantt(cfg, df2):
 def main():
     # get the config from json file
     #cfg = get_cfg(r'D:\Users\wleong\Documents\_personal\gantt\config_DMS.json')
-    cfg = get_cfg(r'D:\Users\wleong\Documents\_personal\gantt\config_sample.json')
+    #cfg = get_cfg(r'D:\Users\wleong\Documents\_personal\gantt\config_sample.json')
+    cfg = get_cfg(r'D:\Wilson\Documents\Python Scripts\tools\gantt\config_sample.json')
     
     # load issues data & pre-process
     df = get_data(cfg)
