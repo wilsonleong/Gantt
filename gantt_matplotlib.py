@@ -4,7 +4,7 @@ Created on Mon Sep  6 14:34:37 2021
 
 @author: WLeong
 
-Source: https://medium.com/geekculture/create-an-advanced-gantt-chart-in-python-f2608a1fd6cc
+Reference: https://medium.com/geekculture/create-an-advanced-gantt-chart-in-python-f2608a1fd6cc
 
 """
 
