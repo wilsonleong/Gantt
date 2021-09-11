@@ -15,7 +15,7 @@ import matplotlib.colors as mcolors
 import datetime
 import json
 import os
-import pytz
+#import pytz
 
 
 # get configurations from json file
@@ -230,10 +230,17 @@ def generate_gantt(cfg, df2):
             if not pd.isnull(df2[ref_date][i]):
                 ax.plot(df2.rel_ref_date[i],                 # this x-axis needs to be relative to the chart start date
                         yticks[i],
+                        
+                        # color='black',
+                        # marker=7,         # https://matplotlib.org/stable/api/markers_api.html
+                        # markeredgewidth=1,
+                        # markersize=5,
+                        # lw=0)
+    
                         color='gray',
                         marker='|',         # https://matplotlib.org/stable/api/markers_api.html
                         markeredgewidth=1,
-                        markersize=20,
+                        markersize=16,
                         lw=0)
     
     plt.gca().invert_yaxis()
