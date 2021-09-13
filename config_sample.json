@@ -8,7 +8,17 @@
 		"ColName_Completion": "PctCompleted",
 		"ColName_Comment": "Comment",
 		
-		"ColName_RefDate": "Reference Date"
+		"ColName_Ref1_Date": "Reference Date",
+		"ColName_Ref1_MarkerStyle": "|",
+		"ColName_Ref1_MarkerColour": "red",
+		"ColName_Ref1_MarkerEdgeWidth": 1,
+		"ColName_Ref1_MarkerSize": 16,
+		
+		"ColName_Ref2_Date": null,
+		"ColName_Ref2_MarkerStyle": "v",
+		"ColName_Ref2_MarkerColour": "black",
+		"ColName_Ref2_MarkerEdgeWidth": 1,
+		"ColName_Ref2_MarkerSize": 5
     },
 	
 	"DataSelection": {

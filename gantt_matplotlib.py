@@ -77,9 +77,12 @@ def preprocess_data(cfg, df):
     #Add relative date
     df['rel_start']=df.start.apply(lambda x: (x - df.start.min()).days)
     # add relative ref date (optional)
-    ref_date = cfg['InputFile']['ColName_RefDate']
-    if ref_date is not None:
-        df['rel_ref_date'] = df[ref_date].apply(lambda x: (x - df.start.min()).days)
+    ref1_date = cfg['InputFile']['ColName_Ref1_Date']
+    if ref1_date is not None:
+        df['rel_ref1_date'] = df[ref1_date].apply(lambda x: (x - df.start.min()).days)
+    ref2_date = cfg['InputFile']['ColName_Ref2_Date']
+    if ref2_date is not None:
+        df['rel_ref2_date'] = df[ref2_date].apply(lambda x: (x - df.start.min()).days)
     # if completion % is available
     if cfg['InputFile']['ColName_Completion'] is not None:
         # calculate width of completed portion of the task
@@ -224,23 +227,36 @@ def generate_gantt(cfg, df2):
                 label=df2[chart_legend_by][i])
 
 
-        # plot reference date (optional data field)
-        ref_date = cfg['InputFile']['ColName_RefDate']
-        if ref_date is not None:
-            if not pd.isnull(df2[ref_date][i]):
-                ax.plot(df2.rel_ref_date[i],                 # this x-axis needs to be relative to the chart start date
+        # plot reference date 1 (optional data field)
+        ref1_date = cfg['InputFile']['ColName_Ref1_Date']
+        ref1_marker_style = cfg['InputFile']['ColName_Ref1_MarkerStyle']
+        ref1_marker_colour = cfg['InputFile']['ColName_Ref1_MarkerColour']
+        ref1_marker_edgewidth = cfg['InputFile']['ColName_Ref1_MarkerEdgeWidth']
+        ref1_marker_size = cfg['InputFile']['ColName_Ref1_MarkerSize']
+        if ref1_date is not None:
+            if not pd.isnull(df2[ref1_date][i]):
+                ax.plot(df2.rel_ref1_date[i],                 # this x-axis needs to be relative to the chart start date
                         yticks[i],
-                        
-                        # color='black',
-                        # marker=7,         # https://matplotlib.org/stable/api/markers_api.html
-                        # markeredgewidth=1,
-                        # markersize=5,
-                        # lw=0)
-    
-                        color='gray',
-                        marker='|',         # https://matplotlib.org/stable/api/markers_api.html
-                        markeredgewidth=1,
-                        markersize=16,
+                        marker=ref1_marker_style,         # https://matplotlib.org/stable/api/markers_api.html
+                        color=ref1_marker_colour,
+                        markeredgewidth=ref1_marker_edgewidth,
+                        markersize=ref1_marker_size,
+                        lw=0)
+
+        # plot reference date 2 (optional data field)
+        ref2_date = cfg['InputFile']['ColName_Ref2_Date']
+        ref2_marker_style = cfg['InputFile']['ColName_Ref2_MarkerStyle']
+        ref2_marker_colour = cfg['InputFile']['ColName_Ref2_MarkerColour']
+        ref2_marker_edgewidth = cfg['InputFile']['ColName_Ref2_MarkerEdgeWidth']
+        ref2_marker_size = cfg['InputFile']['ColName_Ref2_MarkerSize']
+        if ref2_date is not None:
+            if not pd.isnull(df2[ref2_date][i]):
+                ax.plot(df2.rel_ref2_date[i],                 # this x-axis needs to be relative to the chart start date
+                        yticks[i],
+                        marker=ref2_marker_style,         # https://matplotlib.org/stable/api/markers_api.html
+                        color=ref2_marker_colour,
+                        markeredgewidth=ref2_marker_edgewidth,
+                        markersize=ref2_marker_size,
                         lw=0)
     
     plt.gca().invert_yaxis()
