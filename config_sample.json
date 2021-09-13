@@ -7,18 +7,8 @@
         "ColName_ShortDescription": "Task",
 		"ColName_Completion": "PctCompleted",
 		"ColName_Comment": "Comment",
-		
 		"ColName_Ref1_Date": "Reference Date",
-		"ColName_Ref1_MarkerStyle": "|",
-		"ColName_Ref1_MarkerColour": "red",
-		"ColName_Ref1_MarkerEdgeWidth": 1,
-		"ColName_Ref1_MarkerSize": 16,
-		
-		"ColName_Ref2_Date": null,
-		"ColName_Ref2_MarkerStyle": "v",
-		"ColName_Ref2_MarkerColour": "black",
-		"ColName_Ref2_MarkerEdgeWidth": 1,
-		"ColName_Ref2_MarkerSize": 5
+		"ColName_Ref2_Date": null
     },
 	
 	"DataSelection": {
@@ -45,6 +35,16 @@
         "ChartLegendBy": "App",
         "LegendTitle": "App",
 		
-        "XAxisMajor_NoOfDays": 28
+        "XAxisMajor_NoOfDays": 28,
+		
+		"Ref1_MarkerStyle": "|",
+		"Ref1_MarkerColour": "red",
+		"Ref1_MarkerEdgeWidth": 1,
+		"Ref1_MarkerSize": 16,
+		
+		"Ref2_MarkerStyle": "v",
+		"Ref2_MarkerColour": "black",
+		"Ref2_MarkerEdgeWidth": 1,
+		"Ref2_MarkerSize": 5
     }
 }

@@ -229,10 +229,10 @@ def generate_gantt(cfg, df2):
 
         # plot reference date 1 (optional data field)
         ref1_date = cfg['InputFile']['ColName_Ref1_Date']
-        ref1_marker_style = cfg['InputFile']['ColName_Ref1_MarkerStyle']
-        ref1_marker_colour = cfg['InputFile']['ColName_Ref1_MarkerColour']
-        ref1_marker_edgewidth = cfg['InputFile']['ColName_Ref1_MarkerEdgeWidth']
-        ref1_marker_size = cfg['InputFile']['ColName_Ref1_MarkerSize']
+        ref1_marker_style = cfg['Chart']['Ref1_MarkerStyle']
+        ref1_marker_colour = cfg['Chart']['Ref1_MarkerColour']
+        ref1_marker_edgewidth = cfg['Chart']['Ref1_MarkerEdgeWidth']
+        ref1_marker_size = cfg['Chart']['Ref1_MarkerSize']
         if ref1_date is not None:
             if not pd.isnull(df2[ref1_date][i]):
                 ax.plot(df2.rel_ref1_date[i],                 # this x-axis needs to be relative to the chart start date
@@ -245,10 +245,10 @@ def generate_gantt(cfg, df2):
 
         # plot reference date 2 (optional data field)
         ref2_date = cfg['InputFile']['ColName_Ref2_Date']
-        ref2_marker_style = cfg['InputFile']['ColName_Ref2_MarkerStyle']
-        ref2_marker_colour = cfg['InputFile']['ColName_Ref2_MarkerColour']
-        ref2_marker_edgewidth = cfg['InputFile']['ColName_Ref2_MarkerEdgeWidth']
-        ref2_marker_size = cfg['InputFile']['ColName_Ref2_MarkerSize']
+        ref2_marker_style = cfg['Chart']['Ref2_MarkerStyle']
+        ref2_marker_colour = cfg['Chart']['Ref2_MarkerColour']
+        ref2_marker_edgewidth = cfg['Chart']['Ref2_MarkerEdgeWidth']
+        ref2_marker_size = cfg['Chart']['Ref2_MarkerSize']
         if ref2_date is not None:
             if not pd.isnull(df2[ref2_date][i]):
                 ax.plot(df2.rel_ref2_date[i],                 # this x-axis needs to be relative to the chart start date
@@ -299,7 +299,7 @@ def main():
     
     # filter, aggregate data
     df2 = filter_agg_data(cfg, df)
-    df2.to_excel('agg_output.xlsx', index=False)
+    #df2.to_excel('agg_output.xlsx', index=False)
     
     # plot gantt chart & save as PNG
     generate_gantt(cfg, df2)
