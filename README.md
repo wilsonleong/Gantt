@@ -4,7 +4,7 @@
 #Python #pandas #matplotlib
 
 ## Problem Statement
-As a Product Owner, I constantly need to produce slightly different versions of roadmap / project status update to my stakeholders. There is no free tool on the market that helps me plot a Gantt chart to visualise the product roadmap (high level) and backlog (details).
+As a Product Owner, I constantly need to produce slightly different versions of roadmap / project status update to my stakeholders. There is no free tool on the market that helps me plot a Gantt chart to visualise & communicate my product roadmap (strategic, high level) and backlog (details).
 
 ## Solution
 This script generates a Gantt chart for timelines and roadmapping based on the list of issues (e.g. export from JIRA)
