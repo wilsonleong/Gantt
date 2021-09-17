@@ -38,12 +38,12 @@
         "XAxisMajor_NoOfDays": 28,
 		
 		"Ref1_MarkerStyle": "|",
-		"Ref1_MarkerColour": "red",
+		"Ref1_MarkerColour": "black",
 		"Ref1_MarkerEdgeWidth": 1,
 		"Ref1_MarkerSize": 16,
 		
 		"Ref2_MarkerStyle": "v",
-		"Ref2_MarkerColour": "black",
+		"Ref2_MarkerColour": "red",
 		"Ref2_MarkerEdgeWidth": 1,
 		"Ref2_MarkerSize": 5
     }

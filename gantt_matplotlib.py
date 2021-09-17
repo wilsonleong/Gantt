@@ -215,7 +215,7 @@ def generate_gantt(cfg, df2):
                      y=yticks[i],
                      s= comment_str)
         else:
-            alpha_completed = 1
+            alpha_completed = 0.75
 
         # plot completed bar
         plt.barh(y=yticks[i], left=df2.rel_start[i], 
@@ -223,7 +223,7 @@ def generate_gantt(cfg, df2):
                  color=color)
         # plot entire timeline bar
         plt.barh(y=yticks[i], left=df2.rel_start[i], 
-                 width=df2.w_comp[i], alpha=1, color=color,
+                 width=df2.w_comp[i], alpha=0.75, color=color,
                 label=df2[chart_legend_by][i])
 
 
@@ -266,7 +266,7 @@ def generate_gantt(cfg, df2):
     
     # add reference line for today
     xticks_today_pos = [(p_start+datetime.timedelta(days=i)).strftime('%d-%b-%y') for i in x_ticks].index(datetime.datetime.today().strftime('%d-%b-%y'))
-    plt.axvline(x=xticks_today_pos, linestyle='--')
+    plt.axvline(x=xticks_today_pos, linestyle='--', color='red', lw=0.5, alpha=0.75)
     
     #fix legends
     handles, labels = plt.gca().get_legend_handles_labels()
