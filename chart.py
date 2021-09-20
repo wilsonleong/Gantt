@@ -164,7 +164,7 @@ def generate_gantt(cfg, df2):
                     alpha=cfg['Chart']['ChartRef2']['Alpha']
                     )
         plt.text(x=xticks_ref2_pos,
-                 y=len(df2) + 1.3,
+                 y=len(df2) + 0.6,
                  s=cfg['Chart']['ChartRef2']['Comment'],
                  color=cfg['Chart']['ChartRef2']['Colour'],
                  ha='center',
