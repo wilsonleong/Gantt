@@ -211,9 +211,13 @@ def generate_gantt(cfg, df2):
                 comment_str = f'{df2.completion[i]}%'
             else:
                 comment_str = f'{df2.completion[i]}%' + ' - %s' % df2.comment[i]
-            plt.text(x=df2.rel_start[i]+df2.w_comp[i],
-                     y=yticks[i],
-                     s= comment_str)
+            # only plot if task name is displayed on y-axis instead of on the timeline bar
+            if cfg['Chart']['YAxisDisplayText']:
+                plt.text(x=df2.rel_start[i]+df2.w_comp[i],
+                         y=yticks[i],
+                         s=comment_str,
+                         verticalalignment='center',
+                         color='gray')
         else:
             alpha_completed = 0.75
 
@@ -225,14 +229,22 @@ def generate_gantt(cfg, df2):
         plt.barh(y=yticks[i], left=df2.rel_start[i], 
                  width=df2.w_comp[i], alpha=0.75, color=color,
                 label=df2[chart_legend_by][i])
+        
+        # add theme display text
+        if not cfg['Chart']['YAxisDisplayText']:
+            plt.text(x=df2.rel_start[i],
+                     y=yticks[i],
+                     s=df2.task[i],
+                     color='black',
+                     verticalalignment='center'
+                     )
 
-
-        # plot reference date 1 (optional data field)
+        # plot row reference date 1 (optional data field)
         ref1_date = cfg['InputFile']['ColName_Ref1_Date']
-        ref1_marker_style = cfg['Chart']['Ref1_MarkerStyle']
-        ref1_marker_colour = cfg['Chart']['Ref1_MarkerColour']
-        ref1_marker_edgewidth = cfg['Chart']['Ref1_MarkerEdgeWidth']
-        ref1_marker_size = cfg['Chart']['Ref1_MarkerSize']
+        ref1_marker_style = cfg['Chart']['RowRef1']['MarkerStyle']
+        ref1_marker_colour = cfg['Chart']['RowRef1']['MarkerColour']
+        ref1_marker_edgewidth = cfg['Chart']['RowRef1']['MarkerEdgeWidth']
+        ref1_marker_size = cfg['Chart']['RowRef1']['MarkerSize']
         if ref1_date is not None:
             if not pd.isnull(df2[ref1_date][i]):
                 ax.plot(df2.rel_ref1_date[i],                 # this x-axis needs to be relative to the chart start date
@@ -243,12 +255,12 @@ def generate_gantt(cfg, df2):
                         markersize=ref1_marker_size,
                         lw=0)
 
-        # plot reference date 2 (optional data field)
+        # plot row reference date 2 (optional data field)
         ref2_date = cfg['InputFile']['ColName_Ref2_Date']
-        ref2_marker_style = cfg['Chart']['Ref2_MarkerStyle']
-        ref2_marker_colour = cfg['Chart']['Ref2_MarkerColour']
-        ref2_marker_edgewidth = cfg['Chart']['Ref2_MarkerEdgeWidth']
-        ref2_marker_size = cfg['Chart']['Ref2_MarkerSize']
+        ref2_marker_style = cfg['Chart']['RowRef2']['MarkerStyle']
+        ref2_marker_colour = cfg['Chart']['RowRef2']['MarkerColour']
+        ref2_marker_edgewidth = cfg['Chart']['RowRef2']['MarkerEdgeWidth']
+        ref2_marker_size = cfg['Chart']['RowRef2']['MarkerSize']
         if ref2_date is not None:
             if not pd.isnull(df2[ref2_date][i]):
                 ax.plot(df2.rel_ref2_date[i],                 # this x-axis needs to be relative to the chart start date
@@ -268,6 +280,46 @@ def generate_gantt(cfg, df2):
     xticks_today_pos = [(p_start+datetime.timedelta(days=i)).strftime('%d-%b-%y') for i in x_ticks].index(datetime.datetime.today().strftime('%d-%b-%y'))
     plt.axvline(x=xticks_today_pos, linestyle='--', color='red', lw=0.5, alpha=0.75)
     
+    # add chart reference line 1
+    row_ref1_date_str = cfg['Chart']['ChartRef1']['Date']
+    if row_ref1_date_str is not None:
+        row_ref1_date = datetime.datetime.strptime(row_ref1_date_str, '%Y-%m-%d')
+        xticks_ref1_pos = [(p_start+datetime.timedelta(days=i)).strftime('%d-%b-%y') for i in x_ticks].index(row_ref1_date.strftime('%d-%b-%y'))
+        plt.axvline(x=xticks_ref1_pos,
+                    linestyle=cfg['Chart']['ChartRef1']['MarkerStyle'],
+                    color=cfg['Chart']['ChartRef1']['Colour'],
+                    lw=cfg['Chart']['ChartRef1']['LineWidth'],
+                    alpha=cfg['Chart']['ChartRef1']['Alpha']
+                    )
+        plt.text(x=xticks_ref1_pos,
+                 y=len(df2)+1.3,
+                 s=cfg['Chart']['ChartRef1']['Comment'],
+                 color=cfg['Chart']['ChartRef1']['Colour'],
+                 ha='center',
+                 va='bottom',
+                 size=7
+                 )
+
+    # add chart reference line 2
+    row_ref2_date_str = cfg['Chart']['ChartRef2']['Date']
+    if row_ref2_date_str is not None:
+        row_ref2_date = datetime.datetime.strptime(row_ref2_date_str, '%Y-%m-%d')
+        xticks_ref2_pos = [(p_start+datetime.timedelta(days=i)).strftime('%d-%b-%y') for i in x_ticks].index(row_ref2_date.strftime('%d-%b-%y'))
+        plt.axvline(x=xticks_ref2_pos,
+                    linestyle=cfg['Chart']['ChartRef2']['MarkerStyle'],
+                    color=cfg['Chart']['ChartRef2']['Colour'],
+                    lw=cfg['Chart']['ChartRef2']['LineWidth'],
+                    alpha=cfg['Chart']['ChartRef2']['Alpha']
+                    )
+        plt.text(x=xticks_ref2_pos,
+                 y=len(df2)+1.3,
+                 s=cfg['Chart']['ChartRef2']['Comment'],
+                 color=cfg['Chart']['ChartRef2']['Colour'],
+                 ha='center',
+                 va='bottom',
+                 size=7
+                 )
+
     #fix legends
     handles, labels = plt.gca().get_legend_handles_labels()
     handle_list, label_list = [], []
@@ -281,6 +333,10 @@ def generate_gantt(cfg, df2):
     # rotate date
     plt.xticks(rotation=90, ha='right')
     
+    # display task name on y axis / theme name on timeline
+    if not cfg['Chart']['YAxisDisplayText']:
+        ax.axes.yaxis.set_visible(False)
+    
     fig.savefig('output.png', dpi=150, bbox_inches='tight')
     plt.show()
 
@@ -290,8 +346,8 @@ def generate_gantt(cfg, df2):
 def main():
     # get the config from json file
     #cfg = get_cfg(r'D:\Users\wleong\Documents\_personal\gantt\config_DMS.json')
-    #cfg = get_cfg(r'D:\Users\wleong\Documents\_personal\gantt\config_sample.json')
-    cfg = get_cfg(r'D:\Wilson\Documents\Python Scripts\tools\gantt\config_sample.json')
+    cfg = get_cfg(r'D:\Users\wleong\Documents\_personal\gantt\config_sample.json')
+    #cfg = get_cfg(r'D:\Wilson\Documents\Python Scripts\tools\gantt\config_sample.json')
     
     # load issues data & pre-process
     df = get_data(cfg)
