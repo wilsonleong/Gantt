@@ -351,7 +351,7 @@ def generate_gantt(cfg, df2):
         for g in range(len(groups)):
             axs[g].axes.yaxis.set_visible(False)
     
-    fig.savefig('output.png', dpi=150, bbox_inches='tight')
+    fig.savefig('output_separate_swimlanes.png', dpi=150, bbox_inches='tight')
     plt.show()
 
 
