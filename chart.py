@@ -133,8 +133,8 @@ def generate_gantt(cfg, df2):
     plt.axvline(x=xticks_today_pos, linestyle='--', color='red', lw=0.5, alpha=0.75)
     
     # add chart reference line 1
-    row_ref1_date_str = cfg['Chart']['ChartRef1']['Date']
-    if row_ref1_date_str is not None:
+    if cfg['Chart']['ChartRef1']['IsActive']:
+        row_ref1_date_str = cfg['Chart']['ChartRef1']['Date']
         row_ref1_date = datetime.datetime.strptime(row_ref1_date_str, '%Y-%m-%d')
         xticks_ref1_pos = [(p_start+datetime.timedelta(days=i)).strftime('%d-%b-%y') for i in x_ticks].index(row_ref1_date.strftime('%d-%b-%y'))
         plt.axvline(x=xticks_ref1_pos,
@@ -153,8 +153,8 @@ def generate_gantt(cfg, df2):
                  )
 
     # add chart reference line 2
-    row_ref2_date_str = cfg['Chart']['ChartRef2']['Date']
-    if row_ref2_date_str is not None:
+    if cfg['Chart']['ChartRef2']['IsActive']:
+        row_ref2_date_str = cfg['Chart']['ChartRef2']['Date']
         row_ref2_date = datetime.datetime.strptime(row_ref2_date_str, '%Y-%m-%d')
         xticks_ref2_pos = [(p_start+datetime.timedelta(days=i)).strftime('%d-%b-%y') for i in x_ticks].index(row_ref2_date.strftime('%d-%b-%y'))
         plt.axvline(x=xticks_ref2_pos,

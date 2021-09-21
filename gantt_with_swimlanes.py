@@ -197,6 +197,7 @@ def generate_gantt(cfg, df2):
 
     # generate the plot & axes
     groups = list(df2[chart_legend_by].unique())
+    groups.sort()
     
     fig = plt.figure(figsize=(12,10))
     gs = fig.add_gridspec(len(groups), hspace=0.5)
@@ -297,8 +298,8 @@ def generate_gantt(cfg, df2):
             axs[g].axvline(x=xticks_today_pos, linestyle='--', color='red', lw=0.5, alpha=0.75)
             
             # add chart reference line 1
-            row_ref1_date_str = cfg['Chart']['ChartRef1']['Date']
-            if row_ref1_date_str is not None:
+            if cfg['Chart']['ChartRef1']['IsActive']:
+                row_ref1_date_str = cfg['Chart']['ChartRef1']['Date']
                 row_ref1_date = datetime.datetime.strptime(row_ref1_date_str, '%Y-%m-%d')
                 xticks_ref1_pos = [(p_start+datetime.timedelta(days=i)).strftime('%d-%b-%y') for i in x_ticks].index(row_ref1_date.strftime('%d-%b-%y'))
                 axs[g].axvline(x=xticks_ref1_pos,
@@ -320,8 +321,8 @@ def generate_gantt(cfg, df2):
                              )
 
             # add chart reference line 2
-            row_ref2_date_str = cfg['Chart']['ChartRef2']['Date']
-            if row_ref2_date_str is not None:
+            if cfg['Chart']['ChartRef2']['IsActive']:
+                row_ref2_date_str = cfg['Chart']['ChartRef2']['Date']
                 row_ref2_date = datetime.datetime.strptime(row_ref2_date_str, '%Y-%m-%d')
                 xticks_ref2_pos = [(p_start+datetime.timedelta(days=i)).strftime('%d-%b-%y') for i in x_ticks].index(row_ref2_date.strftime('%d-%b-%y'))
                 axs[g].axvline(x=xticks_ref2_pos,
@@ -333,7 +334,8 @@ def generate_gantt(cfg, df2):
                 # annotate only once
                 if g==len(groups)-1:
                     axs[g].text(x=xticks_ref2_pos,
-                             y=len(df2)+1.3,
+                             #y=len(df2)+1.3,
+                             y=-1.3,
                              s=cfg['Chart']['ChartRef2']['Comment'],
                              color=cfg['Chart']['ChartRef2']['Colour'],
                              ha='center',
