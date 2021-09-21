@@ -50,7 +50,7 @@ def get_data(cfg):
                        }, inplace=True)
     if cfg['InputFile']['ColName_Completion'] is not None:
         col_pct_completed = cfg['InputFile']['ColName_Completion']
-        df.rename(columns={col_pct_completed: 'completion'}, inplace=True)
+        #df.rename(columns={col_pct_completed: 'completion'}, inplace=True)
     return df
 
 
@@ -85,7 +85,7 @@ def preprocess_data(cfg, df):
     # if completion % is available
     if cfg['InputFile']['ColName_Completion'] is not None:
         # calculate width of completed portion of the task
-        df['w_comp']=round(df.completion*df.duration/100,2)
+        df['w_comp']=round(df[cfg['InputFile']['ColName_Completion']]*df.duration/100,2)
     else:
         df['w_comp'] = 0
     # sort by Category
@@ -222,9 +222,9 @@ def generate_gantt(cfg, df2):
             if cfg['InputFile']['ColName_Completion'] is not None:
                 alpha_completed = 0.4
                 if dfGroup.comment[r]=='':
-                    comment_str = f'{dfGroup.completion[r]}%'
+                    comment_str = f"{dfGroup[cfg['InputFile']['ColName_Completion']][r]}%"
                 else:
-                    comment_str = f'{dfGroup.completion[r]}%' + ' - %s' % dfGroup.comment[r]
+                    comment_str = f"{dfGroup[cfg['InputFile']['ColName_Completion']][r]}%" + ' - %s' % dfGroup.comment[r]
                 # only plot if task name is displayed on y-axis instead of on the timeline bar
                 if cfg['Chart']['YAxisDisplayText']:
                     axs[g].text(x=dfGroup.rel_start[r]+dfGroup.w_comp[r],
@@ -359,8 +359,8 @@ def generate_gantt(cfg, df2):
 # main process
 def main():
     # get the config from json file
-    #cfg = get_cfg(r'D:\Users\wleong\Documents\_personal\gantt\config_DMS.json')
-    cfg = get_cfg(r'D:\Users\wleong\Documents\_personal\gantt\config_sample.json')
+    cfg = get_cfg(r'D:\Users\wleong\Documents\_personal\gantt\config_DMS.json')
+    #cfg = get_cfg(r'D:\Users\wleong\Documents\_personal\gantt\config_sample.json')
     #cfg = get_cfg(r'D:\Wilson\Documents\Python Scripts\tools\gantt\config_sample.json')
     
     # load issues data & pre-process
