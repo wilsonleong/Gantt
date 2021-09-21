@@ -13,18 +13,21 @@
 	
 	"DataSelection": {
 		"Filter1": {
+			"IsActive": false,
 			"ColName": null,
 			"Type": "Exclude",
 			"Values": ["Completed"]
 		},
 		
 		"Filter2": {
+			"IsActive": false,
 			"ColName": null,
 			"Type": "Exclude",
 			"Values": ["Completed"]
 		},
 
 		"Filter3": {
+			"IsActive": false,
 			"ColName": null,
 			"Type": "Exclude",
 			"Values": ["Completed"]

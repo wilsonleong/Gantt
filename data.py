@@ -44,7 +44,7 @@ def get_data(cfg):
                        }, inplace=True)
     if cfg['InputFile']['ColName_Completion'] is not None:
         col_pct_completed = cfg['InputFile']['ColName_Completion']
-        df.rename(columns={col_pct_completed: 'completion'}, inplace=True)
+        #df.rename(columns={col_pct_completed: 'completion'}, inplace=True)
     return df
 
 
@@ -72,15 +72,14 @@ def preprocess_data(cfg, df):
     # add relative ref date (optional)
     ref1_date = cfg['InputFile']['ColName_Ref1_Date']
     if ref1_date is not None:
-        #df['rel_ref1_date'] = df[ref1_date].apply(lambda x: (x - df.start.min()).days)
-        df.loc[df[ref1_date].notnull(), 'rel_ref1_date'] = df[df[ref1_date].notnull()][ref1_date].apply(lambda x: (x - df.start.min()).days)
+        df['rel_ref1_date'] = df[ref1_date].apply(lambda x: (x - df.start.min()).days)
     ref2_date = cfg['InputFile']['ColName_Ref2_Date']
     if ref2_date is not None:
         df['rel_ref2_date'] = df[ref2_date].apply(lambda x: (x - df.start.min()).days)
     # if completion % is available
     if cfg['InputFile']['ColName_Completion'] is not None:
         # calculate width of completed portion of the task
-        df['w_comp']=round(df.completion*df.duration/100,2)
+        df['w_comp']=round(df[cfg['InputFile']['ColName_Completion']]*df.duration/100,2)
     else:
         df['w_comp'] = 0
     # sort by Category
@@ -140,12 +139,13 @@ def filter_agg_data(cfg, df):
         df3.drop(columns=['w_comp','duration'], inplace=True)
         # add back other data fields
         df3.reset_index(inplace=True)
-        df3['task'] = df3[aggby[-1]]
+        df3['task'] = df3[aggby[0]]
         df3['comment'] = None
-        # reference dates at row level are no longer applicable
-        df3[cfg['InputFile']['ColName_Ref1_Date']] = None
-        df3[cfg['InputFile']['ColName_Ref2_Date']] = None
-
+        # if 'category1' not in df3.columns:
+        #     df3['category1'] = aggby[0]
+        # if 'category2' not in df3.columns:
+        #     df3['category2'] = None
+        # preprocess again
         df_aggd = preprocess_data(cfg, df3)
         return df_aggd
     else:

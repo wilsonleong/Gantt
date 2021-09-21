@@ -16,9 +16,9 @@ import chart
 # main process
 def main():
     # get the config from json file
-    #cfg = get_cfg(r'D:\Users\wleong\Documents\_personal\gantt\config_DMS.json')
-    cfg = data.get_cfg(r'D:\Users\wleong\Documents\_personal\gantt\config_sample.json')
-    #cfg = get_cfg(r'D:\Wilson\Documents\Python Scripts\tools\gantt\config_sample.json')
+    cfg = data.get_cfg(r'D:\Users\wleong\Documents\_personal\gantt\config_DMS.json')
+    #cfg = data.get_cfg(r'D:\Users\wleong\Documents\_personal\gantt\config_sample.json')
+    #cfg = data.get_cfg(r'D:\Wilson\Documents\Python Scripts\tools\gantt\config_sample.json')
     
     # load issues data & pre-process
     df = data.get_data(cfg)

@@ -60,9 +60,9 @@ def generate_gantt(cfg, df2):
         if cfg['InputFile']['ColName_Completion'] is not None:
             alpha_completed = 0.4
             if df2.comment[i]=='':
-                comment_str = f'{df2.completion[i]}%'
+                comment_str = f"'{df2[cfg['InputFile']['ColName_Completion']][i]}%"
             else:
-                comment_str = f'{df2.completion[i]}%' + ' - %s' % df2.comment[i]
+                comment_str = f"{df2[cfg['InputFile']['ColName_Completion']][i]}%" + ' - %s' % df2.comment[i]
             # only plot if task name is displayed on y-axis instead of on the timeline bar
             if cfg['Chart']['YAxisDisplayText']:
                 plt.text(x=df2.rel_start[i]+df2.w_comp[i],
