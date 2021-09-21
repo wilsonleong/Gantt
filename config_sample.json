@@ -12,17 +12,23 @@
     },
 	
 	"DataSelection": {
-		"Filter1_ColName": null,
-		"Filter1_Type": "Exclude",
-		"Filter1_Values": ["Completed"],
+		"Filter1": {
+			"ColName": null,
+			"Type": "Exclude",
+			"Values": ["Completed"]
+		},
 		
-		"Filter2_ColName": null,
-		"Filter2_Type": "Include",
-		"Filter2_Values": [],
-		
-		"Filter3_ColName": null,
-		"Filter3_Type": "Include",
-		"Filter3_Values": [],
+		"Filter2": {
+			"ColName": null,
+			"Type": "Exclude",
+			"Values": ["Completed"]
+		},
+
+		"Filter3": {
+			"ColName": null,
+			"Type": "Exclude",
+			"Values": ["Completed"]
+		},
 		
 		"AggregateBy": []
 	},

@@ -15,7 +15,6 @@ import matplotlib.colors as mcolors
 import datetime
 import json
 import os
-#import pytz
 
 
 # get configurations from json file
@@ -98,15 +97,15 @@ def preprocess_data(cfg, df):
 
 # filter, aggregate data based on config
 def filter_agg_data(cfg, df):
-    filter1_colname = cfg['DataSelection']['Filter1_ColName']
-    filter1_type = cfg['DataSelection']['Filter1_Type']
-    filter1_values = cfg['DataSelection']['Filter1_Values']
-    filter2_colname = cfg['DataSelection']['Filter2_ColName']
-    filter2_type = cfg['DataSelection']['Filter2_Type']
-    filter2_values = cfg['DataSelection']['Filter2_Values']
-    filter3_colname = cfg['DataSelection']['Filter3_ColName']
-    filter3_type = cfg['DataSelection']['Filter3_Type']
-    filter3_values = cfg['DataSelection']['Filter3_Values']
+    filter1_colname = cfg['DataSelection']['Filter1']['ColName']
+    filter1_type = cfg['DataSelection']['Filter1']['Type']
+    filter1_values = cfg['DataSelection']['Filter1']['Values']
+    filter2_colname = cfg['DataSelection']['Filter2']['ColName']
+    filter2_type = cfg['DataSelection']['Filter2']['Type']
+    filter2_values = cfg['DataSelection']['Filter2']['Values']
+    filter3_colname = cfg['DataSelection']['Filter3']['ColName']
+    filter3_type = cfg['DataSelection']['Filter3']['Type']
+    filter3_values = cfg['DataSelection']['Filter3']['Values']
     aggby = cfg['DataSelection']['AggregateBy']
     
     # apply filters
@@ -290,7 +289,7 @@ def generate_gantt(cfg, df2):
             plt.xticks(ticks=x_ticks[::xticks_size], labels=x_labels[::xticks_size])
             axs[g].set_yticks(ticks=dfGroup.index)
             axs[g].set_yticklabels(dfGroup.task)
-            axs[g].grid(axis='x', alpha=0.1)
+            #axs[g].grid(axis='x', alpha=1)     # this doesn't work for some reason
 
     
             # add reference line for today

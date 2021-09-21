@@ -92,15 +92,15 @@ def preprocess_data(cfg, df):
 
 # filter, aggregate data based on config
 def filter_agg_data(cfg, df):
-    filter1_colname = cfg['DataSelection']['Filter1_ColName']
-    filter1_type = cfg['DataSelection']['Filter1_Type']
-    filter1_values = cfg['DataSelection']['Filter1_Values']
-    filter2_colname = cfg['DataSelection']['Filter2_ColName']
-    filter2_type = cfg['DataSelection']['Filter2_Type']
-    filter2_values = cfg['DataSelection']['Filter2_Values']
-    filter3_colname = cfg['DataSelection']['Filter3_ColName']
-    filter3_type = cfg['DataSelection']['Filter3_Type']
-    filter3_values = cfg['DataSelection']['Filter3_Values']
+    filter1_colname = cfg['DataSelection']['Filter1']['ColName']
+    filter1_type = cfg['DataSelection']['Filter1']['Type']
+    filter1_values = cfg['DataSelection']['Filter1']['Values']
+    filter2_colname = cfg['DataSelection']['Filter2']['ColName']
+    filter2_type = cfg['DataSelection']['Filter2']['Type']
+    filter2_values = cfg['DataSelection']['Filter2']['Values']
+    filter3_colname = cfg['DataSelection']['Filter3']['ColName']
+    filter3_type = cfg['DataSelection']['Filter3']['Type']
+    filter3_values = cfg['DataSelection']['Filter3']['Values']
     aggby = cfg['DataSelection']['AggregateBy']
     
     # apply filters
