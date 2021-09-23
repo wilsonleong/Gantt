@@ -1,25 +1,25 @@
 {
     "InputFile": {
-        "FilePath": "sample issues.xlsx",
-        "NoOfRowsToSkip": 0,
-
+        "FilePath": "DMS items.xlsx",
+        "NoOfRowsToSkip": 6,
+		
 		"ColumnNameMapping": {
 			"Start": "Date Opened",
 			"End": "ETA",
-			"ShortDescription": "Task",
+			"ShortDescription": "Short Description",
 			"Completion": "PctCompleted",
 			"Comment": "Comment",
-			"Ref1_Date": "Reference Date",
+			"Ref1_Date": null,
 			"Ref2_Date": null
 		}
     },
 	
 	"DataSelection": {
 		"Filter1": {
-			"IsActive": false,
-			"ColName": null,
+			"IsActive": true,
+			"ColName": "PctCompleted",
 			"Type": "Exclude",
-			"Values": ["Completed"]
+			"Values": [100]
 		},
 		
 		"Filter2": {
@@ -44,10 +44,10 @@
 	
     "Chart": {
         "ChartStartDate": "2021-01-01",
-        "ChartTitle": "Backlog",
+        "ChartTitle": "DMS Issues identified in Asia",
 		
 		"_ChartLegend_Comment": "This section will be forced to the first item in AggregateBy if it isn't empty",
-        "ChartLegendBy": "App",
+        "ChartLegendBy": "Category",
 		
         "XAxisMajor_NoOfDays": 28,
 		
@@ -71,8 +71,8 @@
 		
 		"ChartRef1": {
 			"IsActive": true,
-			"Date": "2021-05-01",
-			"Comment": "Wilson joined the team",
+			"Date": "2021-09-07",
+			"Comment": "Wilson handover to David",
 			"MarkerStyle": "solid",
 			"Colour": "green",
 			"LineWidth": 1,
@@ -81,13 +81,12 @@
 		
 		"ChartRef2": {
 			"IsActive": false,
-			"Date": "2021-12-25",
-			"Comment": "Christmas",
+			"Date": "2021-09-24",
+			"Comment": "Wilson last day",
 			"MarkerStyle": "solid",
-			"Colour": "black",
+			"Colour": "dimgrey",
 			"LineWidth": 1,
 			"Alpha": 1
 		}
-
     }
 }

@@ -20,12 +20,12 @@ def generate_gantt(cfg, df2):
     xticks_size = cfg['Chart']['XAxisMajor_NoOfDays']
     
     # if data was aggregated, legend will need to be forced
-    if len(cfg['DataSelection']['AggregateBy']) > 0:
-        aggby = cfg['DataSelection']['AggregateBy'][0]
+    if cfg['DataSelection']['Aggregation']['IsActive']:
+        aggby = cfg['DataSelection']['Aggregation']['AggregateBy'][0]
         chart_legend_title = aggby
         chart_legend_by = aggby
     else:
-        chart_legend_title = cfg['Chart']['LegendTitle']
+        #chart_legend_title = cfg['Chart']['LegendTitle']
         chart_legend_by = cfg['Chart']['ChartLegendBy']
 
     #project level variables
@@ -57,12 +57,12 @@ def generate_gantt(cfg, df2):
         color = c_dict[df2[chart_legend_by][i]]
 
         # if completion % is available, add value label
-        if cfg['InputFile']['ColName_Completion'] is not None:
+        if cfg['InputFile']['ColumnNameMapping']['Completion'] is not None:
             alpha_completed = 0.4
             if df2.comment[i]=='':
-                comment_str = f"'{df2[cfg['InputFile']['ColName_Completion']][i]}%"
+                comment_str = f"'{df2[cfg['InputFile']['ColumnNameMapping']['Completion']][i]}%"
             else:
-                comment_str = f"{df2[cfg['InputFile']['ColName_Completion']][i]}%" + ' - %s' % df2.comment[i]
+                comment_str = f"{df2[cfg['InputFile']['ColumnNameMapping']['Completion']][i]}%" + ' - %s' % df2.comment[i]
             # only plot if task name is displayed on y-axis instead of on the timeline bar
             if cfg['Chart']['YAxisDisplayText']:
                 plt.text(x=df2.rel_start[i]+df2.w_comp[i],
@@ -92,36 +92,38 @@ def generate_gantt(cfg, df2):
                      )
 
         # plot row reference date 1 (optional data field)
-        ref1_date = cfg['InputFile']['ColName_Ref1_Date']
-        ref1_marker_style = cfg['Chart']['RowRef1']['MarkerStyle']
-        ref1_marker_colour = cfg['Chart']['RowRef1']['MarkerColour']
-        ref1_marker_edgewidth = cfg['Chart']['RowRef1']['MarkerEdgeWidth']
-        ref1_marker_size = cfg['Chart']['RowRef1']['MarkerSize']
-        if ref1_date is not None:
-            if not pd.isnull(df2[ref1_date][i]):
-                ax.plot(df2.rel_ref1_date[i],                 # this x-axis needs to be relative to the chart start date
-                        yticks[i],
-                        marker=ref1_marker_style,         # https://matplotlib.org/stable/api/markers_api.html
-                        color=ref1_marker_colour,
-                        markeredgewidth=ref1_marker_edgewidth,
-                        markersize=ref1_marker_size,
-                        lw=0)
+        if cfg['Chart']['RowRef1']['IsActive']:
+            ref1_date = cfg['InputFile']['ColumnNameMapping']['Ref1_Date']
+            ref1_marker_style = cfg['Chart']['RowRef1']['MarkerStyle']
+            ref1_marker_colour = cfg['Chart']['RowRef1']['MarkerColour']
+            ref1_marker_edgewidth = cfg['Chart']['RowRef1']['MarkerEdgeWidth']
+            ref1_marker_size = cfg['Chart']['RowRef1']['MarkerSize']
+            if ref1_date is not None:
+                if not pd.isnull(df2[ref1_date][i]):
+                    ax.plot(df2.rel_ref1_date[i],                 # this x-axis needs to be relative to the chart start date
+                            yticks[i],
+                            marker=ref1_marker_style,         # https://matplotlib.org/stable/api/markers_api.html
+                            color=ref1_marker_colour,
+                            markeredgewidth=ref1_marker_edgewidth,
+                            markersize=ref1_marker_size,
+                            lw=0)
 
         # plot row reference date 2 (optional data field)
-        ref2_date = cfg['InputFile']['ColName_Ref2_Date']
-        ref2_marker_style = cfg['Chart']['RowRef2']['MarkerStyle']
-        ref2_marker_colour = cfg['Chart']['RowRef2']['MarkerColour']
-        ref2_marker_edgewidth = cfg['Chart']['RowRef2']['MarkerEdgeWidth']
-        ref2_marker_size = cfg['Chart']['RowRef2']['MarkerSize']
-        if ref2_date is not None:
-            if not pd.isnull(df2[ref2_date][i]):
-                ax.plot(df2.rel_ref2_date[i],                 # this x-axis needs to be relative to the chart start date
-                        yticks[i],
-                        marker=ref2_marker_style,         # https://matplotlib.org/stable/api/markers_api.html
-                        color=ref2_marker_colour,
-                        markeredgewidth=ref2_marker_edgewidth,
-                        markersize=ref2_marker_size,
-                        lw=0)
+        if cfg['Chart']['RowRef2']['IsActive']:
+            ref2_date = cfg['InputFile']['ColumnNameMapping']['Ref2_Date']
+            ref2_marker_style = cfg['Chart']['RowRef2']['MarkerStyle']
+            ref2_marker_colour = cfg['Chart']['RowRef2']['MarkerColour']
+            ref2_marker_edgewidth = cfg['Chart']['RowRef2']['MarkerEdgeWidth']
+            ref2_marker_size = cfg['Chart']['RowRef2']['MarkerSize']
+            if ref2_date is not None:
+                if not pd.isnull(df2[ref2_date][i]):
+                    ax.plot(df2.rel_ref2_date[i],                 # this x-axis needs to be relative to the chart start date
+                            yticks[i],
+                            marker=ref2_marker_style,         # https://matplotlib.org/stable/api/markers_api.html
+                            color=ref2_marker_colour,
+                            markeredgewidth=ref2_marker_edgewidth,
+                            markersize=ref2_marker_size,
+                            lw=0)
     
     plt.gca().invert_yaxis()
     plt.xticks(ticks=x_ticks[::xticks_size], labels=x_labels[::xticks_size])
@@ -180,7 +182,7 @@ def generate_gantt(cfg, df2):
             handle_list.append(handle)
             label_list.append(label)
     plt.legend(handle_list, label_list, fontsize='medium', 
-               title=chart_legend_title, title_fontsize='large')
+               title=chart_legend_by, title_fontsize='large')
     
     # rotate date
     plt.xticks(rotation=90, ha='right')

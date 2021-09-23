@@ -23,10 +23,10 @@ def get_data(cfg):
     input_file = cfg['InputFile']['FilePath']
     input_file_ext = os.path.splitext(input_file)[1][1:]
     input_file_skiprows = cfg['InputFile']['NoOfRowsToSkip']
-    col_start = cfg['InputFile']['ColName_Start']
-    col_end = cfg['InputFile']['ColName_End']
-    col_des = cfg['InputFile']['ColName_ShortDescription']
-    col_comment = cfg['InputFile']['ColName_Comment']
+    col_start = cfg['InputFile']['ColumnNameMapping']['Start']
+    col_end = cfg['InputFile']['ColumnNameMapping']['End']
+    col_des = cfg['InputFile']['ColumnNameMapping']['ShortDescription']
+    col_comment = cfg['InputFile']['ColumnNameMapping']['Comment']
     # optional data field: check if it's null
     # check if input file is Excel spreadsheet or CSV file
     if input_file_ext=='xlsx' or input_file_ext=='xls':
@@ -42,9 +42,8 @@ def get_data(cfg):
                        col_des: 'task',
                        col_comment: 'comment'
                        }, inplace=True)
-    if cfg['InputFile']['ColName_Completion'] is not None:
-        col_pct_completed = cfg['InputFile']['ColName_Completion']
-        #df.rename(columns={col_pct_completed: 'completion'}, inplace=True)
+    if cfg['InputFile']['ColumnNameMapping']['Completion'] is not None:
+        col_pct_completed = cfg['InputFile']['ColumnNameMapping']['Completion']
     return df
 
 
@@ -70,21 +69,21 @@ def preprocess_data(cfg, df):
     #Add relative date
     df['rel_start']=df.start.apply(lambda x: (x - df.start.min()).days)
     # add relative ref date (optional)
-    ref1_date = cfg['InputFile']['ColName_Ref1_Date']
+    ref1_date = cfg['InputFile']['ColumnNameMapping']['Ref1_Date']
     if ref1_date is not None:
         df['rel_ref1_date'] = df[ref1_date].apply(lambda x: (x - df.start.min()).days)
-    ref2_date = cfg['InputFile']['ColName_Ref2_Date']
+    ref2_date = cfg['InputFile']['ColumnNameMapping']['Ref2_Date']
     if ref2_date is not None:
         df['rel_ref2_date'] = df[ref2_date].apply(lambda x: (x - df.start.min()).days)
     # if completion % is available
-    if cfg['InputFile']['ColName_Completion'] is not None:
+    if cfg['InputFile']['ColumnNameMapping']['Completion'] is not None:
         # calculate width of completed portion of the task
-        df['w_comp']=round(df[cfg['InputFile']['ColName_Completion']]*df.duration/100,2)
+        df['w_comp']=round(df[cfg['InputFile']['ColumnNameMapping']['Completion']]*df.duration/100,2)
     else:
         df['w_comp'] = 0
     # sort by Category
-    if len(cfg['DataSelection']['AggregateBy']) > 0:
-        chart_legend_by = cfg['DataSelection']['AggregateBy'][0]
+    if cfg['DataSelection']['Aggregation']['IsActive']:
+        chart_legend_by = cfg['DataSelection']['Aggregation']['AggregateBy'][0]
     df=df.sort_values(by=[chart_legend_by,'start'], ascending=[False,True]).reset_index(drop=True)
     return df
 
@@ -100,12 +99,12 @@ def filter_agg_data(cfg, df):
     filter3_colname = cfg['DataSelection']['Filter3']['ColName']
     filter3_type = cfg['DataSelection']['Filter3']['Type']
     filter3_values = cfg['DataSelection']['Filter3']['Values']
-    aggby = cfg['DataSelection']['AggregateBy']
+    aggby = cfg['DataSelection']['Aggregation']['AggregateBy']
     
     # apply filters
     df_filtered = df.copy()
     # apply filter 1
-    if filter1_colname is not None:
+    if cfg['DataSelection']['Filter1']['IsActive']:
         if filter1_type.lower() in ['include','inc']:
             df_filtered = df[df[filter1_colname].isin(filter1_values)]
         elif filter1_type.lower() in ['exclude','exc']:
@@ -113,7 +112,7 @@ def filter_agg_data(cfg, df):
         else:
             print ('ERROR: Unknown filter1 type. Please enter "include" or "exclude".')
     # apply filter 2
-    if filter2_colname is not None:
+    if cfg['DataSelection']['Filter2']['IsActive']:
         if filter2_type.lower() in ['include','inc']:
             df_filtered = df_filtered[df_filtered[filter2_colname].isin(filter2_values)]
         elif filter2_type.lower() in ['exclude','exc']:
@@ -121,7 +120,7 @@ def filter_agg_data(cfg, df):
         else:
             print ('ERROR: Unknown filter2 type. Please enter "include" or "exclude".')
     # apply filter 3
-    if filter3_colname is not None:
+    if cfg['DataSelection']['Filter3']['IsActive']:
         if filter3_type.lower() in ['include','inc']:
             df_filtered = df_filtered[df_filtered[filter3_colname].isin(filter3_values)]
         elif filter3_type.lower() in ['exclude','exc']:
