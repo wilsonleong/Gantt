@@ -17,8 +17,8 @@ This script generates a Gantt chart for timelines and roadmapping based on the l
 * Project kanban board: https://github.com/wilsonleong/Gantt/projects/1
 
 ## Libraries used (Python 3.8 - 64 bits)
-* os
 * datetime
 * json
-* pandas
 * matplotlib
+* os
+* pandas
