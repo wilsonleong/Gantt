@@ -1,0 +1,168 @@
+{
+    "InputFile": {
+        "FilePath": "sample issues2.xlsx",
+        "NoOfRowsToSkip": 0,
+
+		"ColumnNameMapping": {
+			"Start": "Date Started",
+			"End": "ETA",
+			"ShortDescription": "Task",
+			"Completion": "PctCompleted",
+			"Comment": "Comment",
+			"Ref1_Date": "Planned End Date",
+			"Ref2_Date": null
+		}
+    },
+	
+	"OutputFile": {
+		"FileName": "SampleIssue2_Roadmap.png",
+		"WidthInInch": 12,
+		"HeightInInch": 10,
+		"DotsPerInch": 150
+	},
+	
+	"DataSelection": {
+		"Filter1": {
+			"IsActive": false,
+			"ColName": null,
+			"Type": "Exclude",
+			"Values": ["Completed"]
+		},
+		
+		"Filter2": {
+			"IsActive": false,
+			"ColName": null,
+			"Type": "Exclude",
+			"Values": ["Completed"]
+		},
+
+		"Filter3": {
+			"IsActive": false,
+			"ColName": null,
+			"Type": "Exclude",
+			"Values": ["Completed"]
+		},
+		
+		"Aggregation": {
+			"IsActive": false,
+			"AggregateBy": []
+		}
+	},
+	
+    "Chart": {
+        "ChartStartDate": "2021-01-01",
+        "ChartTitle": "Product Roadmap",
+		
+		"_ChartLegend_Comment": "This section will be forced to the first item in AggregateBy if it isn't empty",
+        "ChartLegendBy": "Category",
+		
+        "XAxisMajor_NoOfDays": 7,
+		
+		"YAxisDisplayText": true,
+		
+		"RowRef1": {
+			"IsActive": true,
+			"MarkerStyle": "^",
+			"MarkerColour": "red",
+			"MarkerEdgeWidth": 1,
+			"MarkerSize": 4
+		},
+		
+		"RowRef2": {
+			"IsActive": true,
+			"MarkerStyle": "|",
+			"MarkerColour": "black",
+			"MarkerEdgeWidth": 1,
+			"MarkerSize": 16
+		},
+		
+		"ChartRef1": {
+			"IsActive": true,
+			"Date": "2021-12-01",
+			"Comment": "Wilson joined the team",
+			"MarkerStyle": "solid",
+			"Colour": "green",
+			"LineWidth": 0.5,
+			"Alpha": 0.7
+		},
+		
+		"ChartRef2": {
+			"IsActive": true,
+			"Date": "2022-01-01",
+			"Comment": "End of 2021",
+			"MarkerStyle": "solid",
+			"Colour": "black",
+			"LineWidth": 0.5,
+			"Alpha": 0.5
+		},
+
+		"ChartRef3": {
+			"IsActive": true,
+			"Date": "2022-04-01",
+			"Comment": "End of Q1",
+			"MarkerStyle": "solid",
+			"Colour": "black",
+			"LineWidth": 0.5,
+			"Alpha": 0.5
+		},
+
+		"ChartRef4": {
+			"IsActive": true,
+			"Date": "2022-07-01",
+			"Comment": "End of Q2",
+			"MarkerStyle": "solid",
+			"Colour": "black",
+			"LineWidth": 0.5,
+			"Alpha": 0.5
+		},
+
+		"ChartRef5": {
+			"IsActive": false,
+			"Date": "2022-10-01",
+			"Comment": "End of Q3",
+			"MarkerStyle": "solid",
+			"Colour": "black",
+			"LineWidth": 0.5,
+			"Alpha": 0.5
+		},
+		
+		"ChartRefLine": {
+			"Position": 3,
+			"FontSize": 6
+		},
+		
+		"GreyOutPeriod1": {
+			"IsActive": true,
+			"DateFrom": "2021-12-25",
+			"DateTo": "2021-12-31",
+			"Colour": "grey",
+			"Alpha": 0.25,
+			"DisplayText": "Xmas",
+			"DisplayTextFontSize": 6,
+			"DisplayTextColour": "black"
+		},
+
+		"GreyOutPeriod2": {
+			"IsActive": true,
+			"DateFrom": "2022-01-31",
+			"DateTo": "2022-02-06",
+			"Colour": "grey",
+			"Alpha": 0.25,
+			"DisplayText": "CNY",
+			"DisplayTextFontSize": 6,
+			"DisplayTextColour": "black"
+		},
+
+		"GreyOutPeriod3": {
+			"IsActive": true,
+			"DateFrom": "2022-07-15",
+			"DateTo": "2022-08-15",
+			"Colour": "red",
+			"Alpha": 0.1,
+			"DisplayText": "Summer",
+			"DisplayTextFontSize": 6,
+			"DisplayTextColour": "black"
+		}
+
+    }
+}

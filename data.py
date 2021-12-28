@@ -56,6 +56,8 @@ def preprocess_data(cfg, df):
     df.loc[df.end.isna(), 'end'] = df[df.end.isna()]['start']
     # fill na comments
     df.comment.fillna('', inplace=True)
+    # fill 0% completion for blanks
+    df.PctCompleted.fillna(0, inplace=True)
     # zoom into chart start date
     chart_start_date = datetime.datetime.strptime(cfg['Chart']['ChartStartDate'],'%Y-%m-%d')
     for i in range(len(df)):
