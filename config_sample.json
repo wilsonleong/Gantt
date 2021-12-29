@@ -13,11 +13,18 @@
 			"Ref2_Date": null
 		}
     },
+
+	"OutputFile": {
+		"FileName": "SampleIssue1_Roadmap.png",
+		"WidthInInch": 12,
+		"HeightInInch": 10,
+		"DotsPerInch": 150
+	},
 	
 	"DataSelection": {
 		"Filter1": {
 			"IsActive": false,
-			"ColName": null,
+			"ColName": "Status",
 			"Type": "Exclude",
 			"Values": ["Completed"]
 		},
@@ -87,6 +94,75 @@
 			"Colour": "black",
 			"LineWidth": 1,
 			"Alpha": 1
+		},
+
+		"ChartRef3": {
+			"IsActive": false,
+			"Date": "2022-04-01",
+			"Comment": "End of Q1",
+			"MarkerStyle": "solid",
+			"Colour": "black",
+			"LineWidth": 0.5,
+			"Alpha": 0.5
+		},
+
+		"ChartRef4": {
+			"IsActive": false,
+			"Date": "2022-07-01",
+			"Comment": "End of Q2",
+			"MarkerStyle": "solid",
+			"Colour": "black",
+			"LineWidth": 0.5,
+			"Alpha": 0.5
+		},
+
+		"ChartRef5": {
+			"IsActive": false,
+			"Date": "2022-10-01",
+			"Comment": "End of Q3",
+			"MarkerStyle": "solid",
+			"Colour": "black",
+			"LineWidth": 0.5,
+			"Alpha": 0.5
+		},
+		
+		"ChartRefLine": {
+			"Position": 0,
+			"FontSize": 6,
+			"VerticalAlignment": "top"
+		},
+		
+		"GreyOutPeriod1": {
+			"IsActive": false,
+			"DateFrom": "2021-12-25",
+			"DateTo": "2021-12-31",
+			"Colour": "grey",
+			"Alpha": 0.25,
+			"DisplayText": "Xmas",
+			"DisplayTextFontSize": 6,
+			"DisplayTextColour": "black"
+		},
+
+		"GreyOutPeriod2": {
+			"IsActive": false,
+			"DateFrom": "2022-01-31",
+			"DateTo": "2022-02-06",
+			"Colour": "grey",
+			"Alpha": 0.25,
+			"DisplayText": "CNY",
+			"DisplayTextFontSize": 6,
+			"DisplayTextColour": "black"
+		},
+
+		"GreyOutPeriod3": {
+			"IsActive": false,
+			"DateFrom": "2022-07-15",
+			"DateTo": "2022-08-15",
+			"Colour": "red",
+			"Alpha": 0.1,
+			"DisplayText": "Summer",
+			"DisplayTextFontSize": 6,
+			"DisplayTextColour": "black"
 		}
 
     }

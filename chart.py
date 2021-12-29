@@ -142,6 +142,7 @@ def generate_gantt(cfg, df2):
     #ref_line_position = 3
     ref_line_position = cfg['Chart']['ChartRefLine']['Position']
     ref_line_fontsize = cfg['Chart']['ChartRefLine']['FontSize']
+    ref_line_va = cfg['Chart']['ChartRefLine']['VerticalAlignment']
     
     # add chart reference line 1
     if cfg['Chart']['ChartRef1']['IsActive']:
@@ -159,7 +160,7 @@ def generate_gantt(cfg, df2):
                  s=cfg['Chart']['ChartRef1']['Comment'],
                  color=cfg['Chart']['ChartRef1']['Colour'],
                  ha='center',
-                 va='bottom',
+                 va=ref_line_va,
                  size=ref_line_fontsize
                  )
 
@@ -179,7 +180,7 @@ def generate_gantt(cfg, df2):
                  s=cfg['Chart']['ChartRef2']['Comment'],
                  color=cfg['Chart']['ChartRef2']['Colour'],
                  ha='center',
-                 va='bottom',
+                 va=ref_line_va,
                  size=ref_line_fontsize
                  )
 
@@ -200,7 +201,7 @@ def generate_gantt(cfg, df2):
                  s=cfg['Chart']['ChartRef3']['Comment'],
                  color=cfg['Chart']['ChartRef3']['Colour'],
                  ha='center',
-                 va='bottom',
+                 va=ref_line_va,
                  size=ref_line_fontsize
                  )
 
@@ -220,7 +221,7 @@ def generate_gantt(cfg, df2):
                  s=cfg['Chart']['ChartRef4']['Comment'],
                  color=cfg['Chart']['ChartRef4']['Colour'],
                  ha='center',
-                 va='bottom',
+                 va=ref_line_va,
                  size=ref_line_fontsize
                  )
 
@@ -240,7 +241,7 @@ def generate_gantt(cfg, df2):
                  s=cfg['Chart']['ChartRef5']['Comment'],
                  color=cfg['Chart']['ChartRef5']['Colour'],
                  ha='center',
-                 va='bottom',
+                 va=ref_line_va,
                  size=ref_line_fontsize
                  )
     

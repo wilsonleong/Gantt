@@ -127,8 +127,9 @@
 		},
 		
 		"ChartRefLine": {
-			"Position": 3,
-			"FontSize": 6
+			"Position": 0,
+			"FontSize": 6,
+			"VerticalAlignment": "top"
 		},
 		
 		"GreyOutPeriod1": {
