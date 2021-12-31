@@ -15,6 +15,7 @@ This script generates a Gantt chart for timelines and roadmapping based on the l
 ## Links
 * Example output: https://github.com/wilsonleong/Gantt/wiki/Gantt-Chart
 * Project kanban board: https://github.com/wilsonleong/Gantt/projects/1
+* How to generate your own gantt chart: https://github.com/wilsonleong/Gantt/wiki/How-to-generate-your-own-gantt-chart
 
 ## Libraries used (Python 3.8 - 64 bits)
 * datetime
