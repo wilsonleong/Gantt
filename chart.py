@@ -150,7 +150,7 @@ def generate_gantt(cfg, df2):
         row_ref1_date = datetime.datetime.strptime(row_ref1_date_str, '%Y-%m-%d')
         xticks_ref1_pos = [(p_start+datetime.timedelta(days=i)).strftime('%d-%b-%y') for i in x_ticks].index(row_ref1_date.strftime('%d-%b-%y'))
         plt.axvline(x=xticks_ref1_pos,
-                    linestyle=cfg['Chart']['ChartRef1']['MarkerStyle'],
+                    linestyle=cfg['Chart']['ChartRef1']['LineStyle'],
                     color=cfg['Chart']['ChartRef1']['Colour'],
                     lw=cfg['Chart']['ChartRef1']['LineWidth'],
                     alpha=cfg['Chart']['ChartRef1']['Alpha']
@@ -170,7 +170,7 @@ def generate_gantt(cfg, df2):
         row_ref2_date = datetime.datetime.strptime(row_ref2_date_str, '%Y-%m-%d')
         xticks_ref2_pos = [(p_start+datetime.timedelta(days=i)).strftime('%d-%b-%y') for i in x_ticks].index(row_ref2_date.strftime('%d-%b-%y'))
         plt.axvline(x=xticks_ref2_pos,
-                    linestyle=cfg['Chart']['ChartRef2']['MarkerStyle'],
+                    linestyle=cfg['Chart']['ChartRef2']['LineStyle'],
                     color=cfg['Chart']['ChartRef2']['Colour'],
                     lw=cfg['Chart']['ChartRef2']['LineWidth'],
                     alpha=cfg['Chart']['ChartRef2']['Alpha']
@@ -191,7 +191,7 @@ def generate_gantt(cfg, df2):
         row_ref3_date = datetime.datetime.strptime(row_ref3_date_str, '%Y-%m-%d')
         xticks_ref3_pos = [(p_start+datetime.timedelta(days=i)).strftime('%d-%b-%y') for i in x_ticks].index(row_ref3_date.strftime('%d-%b-%y'))
         plt.axvline(x=xticks_ref3_pos,
-                    linestyle=cfg['Chart']['ChartRef3']['MarkerStyle'],
+                    linestyle=cfg['Chart']['ChartRef3']['LineStyle'],
                     color=cfg['Chart']['ChartRef3']['Colour'],
                     lw=cfg['Chart']['ChartRef3']['LineWidth'],
                     alpha=cfg['Chart']['ChartRef3']['Alpha']
@@ -211,7 +211,7 @@ def generate_gantt(cfg, df2):
         row_ref4_date = datetime.datetime.strptime(row_ref4_date_str, '%Y-%m-%d')
         xticks_ref4_pos = [(p_start+datetime.timedelta(days=i)).strftime('%d-%b-%y') for i in x_ticks].index(row_ref4_date.strftime('%d-%b-%y'))
         plt.axvline(x=xticks_ref4_pos,
-                    linestyle=cfg['Chart']['ChartRef4']['MarkerStyle'],
+                    linestyle=cfg['Chart']['ChartRef4']['LineStyle'],
                     color=cfg['Chart']['ChartRef4']['Colour'],
                     lw=cfg['Chart']['ChartRef4']['LineWidth'],
                     alpha=cfg['Chart']['ChartRef4']['Alpha']
@@ -231,7 +231,7 @@ def generate_gantt(cfg, df2):
         row_ref5_date = datetime.datetime.strptime(row_ref2_date_str, '%Y-%m-%d')
         xticks_ref5_pos = [(p_start+datetime.timedelta(days=i)).strftime('%d-%b-%y') for i in x_ticks].index(row_ref5_date.strftime('%d-%b-%y'))
         plt.axvline(x=xticks_ref5_pos,
-                    linestyle=cfg['Chart']['ChartRef5']['MarkerStyle'],
+                    linestyle=cfg['Chart']['ChartRef5']['LineStyle'],
                     color=cfg['Chart']['ChartRef5']['Colour'],
                     lw=cfg['Chart']['ChartRef5']['LineWidth'],
                     alpha=cfg['Chart']['ChartRef5']['Alpha']

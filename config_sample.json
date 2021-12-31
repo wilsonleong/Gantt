@@ -80,7 +80,7 @@
 			"IsActive": true,
 			"Date": "2021-05-01",
 			"Comment": "Wilson joined the team",
-			"MarkerStyle": "solid",
+			"LineStyle": "solid",
 			"Colour": "green",
 			"LineWidth": 1,
 			"Alpha": 0.7
@@ -90,7 +90,7 @@
 			"IsActive": false,
 			"Date": "2021-12-25",
 			"Comment": "Christmas",
-			"MarkerStyle": "solid",
+			"LineStyle": "solid",
 			"Colour": "black",
 			"LineWidth": 1,
 			"Alpha": 1
@@ -100,7 +100,7 @@
 			"IsActive": false,
 			"Date": "2022-04-01",
 			"Comment": "End of Q1",
-			"MarkerStyle": "solid",
+			"LineStyle": "solid",
 			"Colour": "black",
 			"LineWidth": 0.5,
 			"Alpha": 0.5
@@ -110,7 +110,7 @@
 			"IsActive": false,
 			"Date": "2022-07-01",
 			"Comment": "End of Q2",
-			"MarkerStyle": "solid",
+			"LineStyle": "solid",
 			"Colour": "black",
 			"LineWidth": 0.5,
 			"Alpha": 0.5
@@ -120,7 +120,7 @@
 			"IsActive": false,
 			"Date": "2022-10-01",
 			"Comment": "End of Q3",
-			"MarkerStyle": "solid",
+			"LineStyle": "solid",
 			"Colour": "black",
 			"LineWidth": 0.5,
 			"Alpha": 0.5
