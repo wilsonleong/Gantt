@@ -6,6 +6,7 @@ Created on Mon Sep 20 17:17:09 2021
 """
 
 import datetime
+from dateutil.relativedelta import relativedelta
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
@@ -143,6 +144,71 @@ def generate_gantt(cfg, df2):
     ref_line_position = cfg['Chart']['ChartRefLine']['Position']
     ref_line_fontsize = cfg['Chart']['ChartRefLine']['FontSize']
     ref_line_va = cfg['Chart']['ChartRefLine']['VerticalAlignment']
+    
+    # add Quarter Separators
+    if cfg['Chart']['QuarterSeparators']['IsActive']:
+        # take earliest start date (p_start), work out next quarter, check if its before the latest end date (p_end)
+        def get_quarter(p_date: datetime.date) -> int:
+            return (p_date.month - 1) // 3 + 1
+        
+        def get_first_day_of_the_quarter(p_date: datetime.date):
+            return datetime.datetime(p_date.year, 3 * ((p_date.month - 1) // 3) + 1, 1)
+        
+        def get_last_day_of_the_quarter(p_date: datetime.date):
+            quarter = get_quarter(p_date)
+            return datetime.datetime(p_date.year + 3 * quarter // 12, 3 * quarter % 12 + 1, 1) + datetime.timedelta(days=-1)
+
+        # identify the lines that need to be plotted
+        quarter_dates = []
+        next_q_date = get_last_day_of_the_quarter(p_start) + datetime.timedelta(days=1)
+        next_q_date = next_q_date.date()
+        if p_start==next_q_date:
+            next_q_date = get_last_day_of_the_quarter(p_start + datetime.timedelta(days=1)).date()
+        final_q_date = get_first_day_of_the_quarter(p_end)
+        final_q_date = final_q_date.date()
+        
+        while next_q_date <= final_q_date:
+            quarter_dates.append(next_q_date)
+            next_q_date = next_q_date + relativedelta(months=3)
+        
+        # plot each of the dates
+        for d in range(len(quarter_dates)):
+            qdate = quarter_dates[d]
+            xticks_qdate_pos = [(p_start+datetime.timedelta(days=i)).strftime('%d-%b-%y') for i in x_ticks].index(qdate.strftime('%d-%b-%y'))
+            # plot the line
+            plt.axvline(x = xticks_qdate_pos,
+                        linestyle = cfg['Chart']['QuarterSeparators']['LineStyle'],
+                        color = cfg['Chart']['QuarterSeparators']['Colour'],
+                        lw = cfg['Chart']['QuarterSeparators']['LineWidth'],
+                        alpha = cfg['Chart']['QuarterSeparators']['Alpha'],
+                        )
+            # annotate
+            if qdate.month==1:
+                qdate_text = 'End of %s' % (qdate - datetime.timedelta(days=1)).year
+            else:
+                qdate_text = 'Q%s' % get_quarter(qdate)
+                
+            plt.text(
+                x = xticks_qdate_pos,
+                y = len(df2) + ref_line_position,
+                s = qdate_text,
+                color = cfg['Chart']['QuarterSeparators']['Colour'],
+                ha = 'center',
+                va = ref_line_va,
+                size = ref_line_fontsize
+                )
+
+
+
+
+
+
+
+
+
+
+
+
     
     # add chart reference line 1
     if cfg['Chart']['ChartRef1']['IsActive']:

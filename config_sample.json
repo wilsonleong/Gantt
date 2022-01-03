@@ -60,6 +60,14 @@
 		
 		"YAxisDisplayText": true,
 		
+		"QuarterSeparators": {
+			"IsActive": true,
+			"LineStyle": "solid",
+			"Colour": "black",
+			"LineWidth": 0.5,
+			"Alpha": 0.5
+		},
+		
 		"RowRef1": {
 			"IsActive": true,
 			"MarkerStyle": "|",

@@ -60,6 +60,14 @@
 		
 		"YAxisDisplayText": true,
 		
+		"QuarterSeparators": {
+			"IsActive": true,
+			"LineStyle": "solid",
+			"Colour": "black",
+			"LineWidth": 0.5,
+			"Alpha": 0.5
+		},
+		
 		"RowRef1": {
 			"IsActive": true,
 			"MarkerStyle": "^",
@@ -87,7 +95,7 @@
 		},
 		
 		"ChartRef2": {
-			"IsActive": true,
+			"IsActive": false,
 			"Date": "2022-01-01",
 			"Comment": "End of 2021",
 			"LineStyle": "solid",
@@ -97,7 +105,7 @@
 		},
 
 		"ChartRef3": {
-			"IsActive": true,
+			"IsActive": false,
 			"Date": "2022-04-01",
 			"Comment": "End of Q1",
 			"LineStyle": "solid",
@@ -107,7 +115,7 @@
 		},
 
 		"ChartRef4": {
-			"IsActive": true,
+			"IsActive": false,
 			"Date": "2022-07-01",
 			"Comment": "End of Q2",
 			"LineStyle": "solid",
@@ -134,11 +142,11 @@
 		
 		"GreyOutPeriod1": {
 			"IsActive": true,
-			"DateFrom": "2021-12-25",
-			"DateTo": "2021-12-31",
+			"DateFrom": "2021-12-20",
+			"DateTo": "2022-01-04",
 			"Colour": "grey",
 			"Alpha": 0.25,
-			"DisplayText": "Xmas",
+			"DisplayText": "Xmas & NY",
 			"DisplayTextFontSize": 6,
 			"DisplayTextColour": "black"
 		},
