@@ -186,7 +186,7 @@ def generate_gantt(cfg, df2):
             if qdate.month==1:
                 qdate_text = 'End of %s' % (qdate - datetime.timedelta(days=1)).year
             else:
-                qdate_text = 'Q%s' % get_quarter(qdate)
+                qdate_text = 'Q%s' % get_quarter(qdate - datetime.timedelta(days=1))
                 
             plt.text(
                 x = xticks_qdate_pos,
@@ -197,17 +197,6 @@ def generate_gantt(cfg, df2):
                 va = ref_line_va,
                 size = ref_line_fontsize
                 )
-
-
-
-
-
-
-
-
-
-
-
 
     
     # add chart reference line 1
